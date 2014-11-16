@@ -28,6 +28,8 @@
 *.fls
 *.out
 *.toc
+*.lol
+*.tpt
 
 # Intermediate documents:
 *.dvi
@@ -86,6 +88,10 @@ Session.vim
 *.x86_64
 *.hex
 *.elf
+*.bin
+
+# dependency files
+*.d
 
 # doxygen created output
 **/docs/doxygen/**
