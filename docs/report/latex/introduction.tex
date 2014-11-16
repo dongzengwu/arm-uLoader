@@ -1,0 +1,80 @@
+\chapter{Einleitung}
+% \section{Idee}
+Zunächst sollen die Motivation sowie die ersten Gedanken zu dem Projek dargestellt werde.
+\section{Der Gedanke}
+Der Gedanke hinter diesem Projekt ist es, dass ein Gewächshaus bzw. der Botanische Garten hinsichtlich der Bedürfnisse der Pflanzen, dazu gehören Wasserbedarf und Umgebungstemperatur, überwacht werden. Aufbauend darauf ließe sich bei Fortführung des Projekts eine automatisierte Steuerung der Belüftungs- und Bewässerungsanlage entwickeln.
+
+Die ermittelten Daten werden im Web angezeigt. Auf diese Weise k\"onnen Interessierte sich die
+Informationen anzeigen lassen. Die geplante Audio-Ausgabe konnte leider nicht mehr realisiert werden.
+Bei korrekter Konfiguration lassen sich so eventuell die Kosten für Pflege und Verwaltung senken. Dabei kann nebenbei mehr Information über die Pflanzen direkt an den Besucher weitergeleitet werden. Die Weiterleitung der Informationen und Gefühle der Pflanze soll das Interesse und Bewusstsein an der Natur der Besucher steigern.
+
+\section{Vorüberlegungen}
+Es sollen Sensoren an Pflanzen (primär Bäume) und in ihrer Umgebung angebracht werden d. h. es werden kleine, leichte und störungsunanfällige Einheiten dafür benötigt (im Folgenden Satelliten / Sensoreinheit genannt).
+
+Die eingesetzten Sensoren sollten unter anderem die Bewegung und die Temperatur im Raum der Pflanze erfassen.
+M\"ogliche Erg\"anzungen der Datenerfassung sind die Umgebungshelligkeit und gegebenenfalls den Wasserbedarf der Pflanze.
+
+Der Sensorverbund (Satellit) sollte daher in der Endfertigung für die Produktion mindestens über die Schutzklasse IP67 verfügen, da sie auch jeglichen Umwelteinflüssen und kurzzeitiges untertauchen widerstehen müssen.
+
+Da die aufgenommenen Daten auch angezeigt sowie ausgewertet werden sollen, wird eine Einheit benötigt, die diese Aufgabe übernimmt. Diese Einheit muss eine Rechenleistung haben, die hoch genug ist um alle eintreffenden Satelliten-Daten quasi gleichzeitig zu verarbeiten und anzuzeigen. Für diese Aufgabe wurde ein Carambola2 gewählt (im Folgenden Zentrale Einheit / Carambola genannt).
+
+Um einen möglichst günstigen und energiesparenden Satelliten zu erhalten und zusätzlich Schwerpunkte dieses Kurses zu erreichen, wird die Sensoreinheit vom Grund auf selbst geplant und realisiert werden.
+Eine weitere  Zielstellung dabei ist, eine möglichst kompakte und sowohl autarke als auch robuste Einheit zu erhalten.
+Die maximal lang ohne Externe Wartungen auskommen kann.
+
+\section{Projektablauf}
+Das Projekt ist logisch in mehrere Abschnitte unterteilt. Dies dient Vereinfachung und der chronologischen Zielsetzung des gesamten Aufbaus.
+Die äußeren beiden Pfade werden von jeweils einer Person allein abgearbeitet.
+Der mittlere Pfad wird weitgehend in Kooperation der Projekt-Teilnehmer abgearbeitet
+und stellt im Wesentlichen sicher, dass die geforderte Integrität des Projekts gegeben ist.
+\\
+
+\begin{figure}[ht]
+	\centering
+\begin{tikzpicture}[
+		level 1/.style={sibling distance=40mm},
+		edge from parent/.style={->,draw},
+	>=latex]
+
+	% root of the the initial tree, level 1
+	\node[root] {Talking Tree}
+	% The first level, as children of the initial tree
+	child {node[level 2] (c1) {Satellit}}
+	child {node[level 2] (c2) {Test}}
+	child {node[level 2] (c3) {Zentrale Einheit}};
+
+	% The second level, relatively positioned nodes
+	\begin{scope}[every node/.style={level 3}]
+		\node [below of = c1, xshift=15pt] (c11) {Hardwarefindung};
+		\node [below of = c11] (c12) {Funktionsweise eruieren};
+		\node [below of = c12] (c13) {Layout planen};
+		\node [below of = c13] (c14) {Layout testen};
+		\node [below of = c14] (c15) {Code Basis aufstellen};
+		\node [below of = c15, yshift=-0.5cm] (c16) {Code mittels Testaufbau verifizieren};
+
+		\node [below of = c2, xshift=15pt] (c21) {Wifi testen};
+		\node [below of = c21] (c22) {Sensoren Güte verifizieren};
+		\node [below of = c22, yshift=-0.3cm] (c23) {Konnektivität klarstellen};
+		\node [below of = c23, yshift=-0.3cm] (c24) {Ablauf überprüfen};
+		\node [below of = c24, yshift=-0.3cm] (c25) {Ausgaben validieren};
+
+		\node [below of = c3, xshift=15pt] (c31) {Hardwarefindung};
+		\node [below of = c31] (c32) {Hardware Aufbau};
+		\node [below of = c32] (c33) {Treiber einrichten};
+		\node [below of = c33, yshift=-0.3cm] (c34) {Software implementieren};
+		\node [below of = c34] (c35) {Software einrichten};
+		\node [below of = c35, yshift=-0.3cm] (c36) {Software aufeinander anpassen};
+	\end{scope}
+
+	% lines from each level 1 node to every one of its "children"
+	\foreach \value in {1,2,3,4,5,6}
+	\draw[->] (c1.191) |- (c1\value.west);
+
+	\foreach \value in {1,...,5}
+	\draw[->] (c2.191) |- (c2\value.west);
+
+	\foreach \value in {1,...,6}
+	\draw[->] (c3.191) |- (c3\value.west);
+\end{tikzpicture}
+\caption{\textit{Work Breakdown Structure} Diagramm}
+\end{figure}
