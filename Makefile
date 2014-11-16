@@ -1,9 +1,18 @@
+########## config start ##########
+
 PROJECT_NAME	:= "uLoader"
+# name of created binary
 PROG_NAME	:= $(PROJECT_NAME)
+# name of target device
 TARGET		:= stm32f4
+# STM firmware/library path
 STM_FW_DIR	:= $(HOME)/stm32_discovery_arm_gcc/STM32F4-Discovery_FW_V1.1.0/
+# stlink path for programming/debugging tools
 STLINK		:= $(HOME)/stlink/
+# all extra source files go here
 MODULES		:= example.c
+
+########## config end ############
 
 PROJECT_DIR	?= $(PWD)/
 OUTPUT_DIR	?= bin/
@@ -58,6 +67,20 @@ LIBS		:= -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
 INCLUDEPATHS	:= $(addprefix -I ,$(include_dirs))
 
 DATE		:= `date +"%Y-%m-%d_%H-%M"`
+NULLDEVICE	:= /dev/null
+RMFILES		:= rm -rf
+ALLFILES	:= /*.*
+
+$(shell mkdir $(OBJECTS_DIR)>$(NULLDEVICE) 2>&1)
+$(shell mkdir $(OUTPUT_DIR)>$(NULLDEVICE) 2>&1)
+$(shell mkdir $(DEPENDENCY_DIR)>$(NULLDEVICE) 2>&1)
+ifeq (clean,$(findstring clean, $(MAKECMDGOALS)))
+  ifneq ($(filter $(MAKECMDGOALS),all burn doc report),)
+    $(shell $(RMFILES) $(OBJECTS_DIR)$(ALLFILES)>$(NULLDEVICE) 2>&1)
+    $(shell $(RMFILES) $(OUTPUT_DIR)$(ALLFILES)>$(NULLDEVICE) 2>&1)
+    $(shell $(RMFILES) $(DEPENDENCY_DIR)$(ALLFILES)>$(NULLDEVICE) 2>&1)
+  endif
+endif
 
 vpath %.h $(include_dirs)
 vpath %.c $(SOURCE_DIR)
@@ -95,11 +118,7 @@ $(OBJECTS_DIR)%.o: %.s
 	@echo "Assembling $<"
 	$(CC) $(ASMFLAGS) $(INCLUDEPATHS) -c -o $(OBJECTS_DIR)$(@F) $<
 
-.PHONY: clean doc report
-
-objects:
-	@echo $(OBJECTS)
-	@echo $(S_SOURCES)
+.PHONY: clean doc report burn
 
 doc:
 	@cd $(DOCUMENTS_DIR); \
