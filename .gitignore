@@ -85,6 +85,10 @@ Session.vim
 *.i*86
 *.x86_64
 *.hex
+*.elf
 
 # doxygen created output
-docs/doxygen/*
+**/docs/doxygen/**
+
+# Dolphin config
+.directory
