@@ -36,7 +36,7 @@ Project documentation is done via [Latex](http://wiki.ubuntuusers.de/LATEX).
 
 `git clone https://github.com/rowol/stm32_discovery_arm_gcc`
 
-##### Weitere Links
+##### See also
 
 [arm gcc toolchain](https://launchpad.net/~terry.guo/+archive/ubuntu/gcc-arm-embedded)
 
