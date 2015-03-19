@@ -14,7 +14,6 @@ MODULES		:= example.c
 
 ########## config end ############
 
-PROJECT_DIR	?= $(PWD)/
 OUTPUT_DIR	?= bin/
 DOCUMENTS_DIR	?= docs/
 DEPENDENCY_DIR	?= dep/
@@ -22,10 +21,11 @@ OBJECTS_DIR	?= obj/
 SOURCE_DIR	?= src/
 INCLUDE_DIR	?= include/
 SCRIPTS_DIR	?= scripts/
+PROJECT_DIR	?= $(OUTPUT_DIR)../
 
 PROG_NAME_NQ	:= $(patsubst "%",%,$(PROG_NAME))
 EXECUTABLES	:= $(PROG_NAME_NQ).elf
-include_dirs	:= $(INCLUDE_DIR)
+include_dirs	:= $(INCLUDE_DIR) $(PROJECT_DIR)lwip/include/
 
 BINPATH		:= $(addprefix $(OUTPUT_DIR),$(EXECUTABLES))
 FILENAMES	:= $(basename $(EXECUTABLES))
@@ -41,14 +41,18 @@ ifeq ($(TARGET),stm32f4)
 	CPU		:= cortex-m4
 	CC		:= arm-none-eabi-gcc
 	OBJCOPY		:= arm-none-eabi-objcopy
-	CFLAGS		+= -T$(SOURCE_DIR)stm32_flash.ld
-	LDFLAGS		+= -T$(SOURCE_DIR)stm32_flash.ld
+	ARCH_DIR	:= $(PROJECT_DIR)arch/arm/mach-stm32f4x7
+	ARCH_SRC_DIR	:= $(ARCH_DIR)/src/
+	ARCH_INC_DIR	:= $(ARCH_DIR)/include/
+	CFLAGS		+= -T$(ARCH_SRC_DIR)stm32_flash.ld
+	LDFLAGS		+= -T$(ARCH_SRC_DIR)stm32_flash.ld
 	include_dirs	+= $(STM_FW_DIR)Utilities/STM32F4-Discovery
 	include_dirs	+= $(STM_FW_DIR)Libraries/CMSIS/Include
 	include_dirs	+= $(STM_FW_DIR)Libraries/CMSIS/ST/STM32F4xx/Include
 	include_dirs	+= $(STM_FW_DIR)Libraries/STM32F4xx_StdPeriph_Driver/inc
-	C_SOURCES	+= $(SOURCE_DIR)system_stm32f4xx.c
-	S_SOURCES	+= $(SOURCE_DIR)startup_stm32f4xx.s
+	include_dirs	+= $(ARCH_INC_DIR)/
+	C_SOURCES	+= $(ARCH_SRC_DIR)/system_stm32f4xx.c
+	S_SOURCES	+= $(ARCH_SRC_DIR)/startup_stm32f4xx.s
 endif
 
 CPU		?= cortex-m3
@@ -82,9 +86,9 @@ ifeq (clean,$(findstring clean, $(MAKECMDGOALS)))
   endif
 endif
 
-vpath %.h $(include_dirs)
-vpath %.c $(SOURCE_DIR)
-vpath %.s $(SOURCE_DIR)
+vpath %.h $(include_dirs) $(ARCH_INC_DIR)
+vpath %.c $(SOURCE_DIR) $(ARCH_SRC_DIR)
+vpath %.s $(SOURCE_DIR) $(ARCH_SRC_DIR)
 vpath %.sh $(SCRIPTS_DIR)
 vpath %.o $(OBJECTS_DIR)
 vpath %.d $(DEPENDENCY_DIR)
