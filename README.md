@@ -38,7 +38,7 @@ Project documentation is done via [Latex](http://wiki.ubuntuusers.de/LATEX).
 
 `make`
 
-`sudo cp ~/stlink/49-stlinkv\*.rules /etc/udev/rules.d`
+`sudo cp ~/stlink/49-stlinkv*.rules /etc/udev/rules.d`
 
 `sudo udevadm control --reload-rules`
 
