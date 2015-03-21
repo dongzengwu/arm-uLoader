@@ -10,8 +10,7 @@ STM_FW_DIR	:= $(HOME)/stm32_discovery_arm_gcc/STM32F4-Discovery_FW_V1.1.0/
 # stlink path for programming/debugging tools
 STLINK		:= $(HOME)/stlink/
 # all extra source files go here
-# MODULES		:= example.c netconf.c ethernetif.c
-MODULES		:= example.c
+MODULES		:= example.c tm_stm32f4_usart.c tm_stm32f4_gpio.c
 
 ########## config end ############
 
@@ -38,7 +37,8 @@ FILENAMES	:= $(basename $(EXECUTABLES))
 OBJECTS		:= $(addsuffix .o,$(FILENAMES))
 SOURCES		:= $(addsuffix .c,$(FILENAMES))
 
-CFLAGS		:= -g -O2 -Wall -Werror -Wextra -std=gnu99 -fdata-sections -ffunction-sections
+CFLAGS		:= -g -O2 -Wall -Werror -Wextra -std=gnu99 -fdata-sections -ffunction-sections \
+	-Wno-unused-parameter -Wno-uninitialized
 LDFLAGS		:= -Wl,--gc-sections
 CPPFLAGS	:= -D PROG_NAME=$(patsubst %,\"%\",$(PROG_NAME_NQ))
 ASMFLAGS	:= -x assembler-with-cpp
@@ -58,8 +58,8 @@ ifeq ($(TARGET),stm32f4)
 	include_dirs	+= $(STM_FW_DIR)Libraries/STM32F4xx_StdPeriph_Driver/inc
 	source_dirs	+= $(STM_FW_DIR)Libraries/STM32F4xx_StdPeriph_Driver/src
 	include_dirs	+= $(ARCH_INC_DIR)/
-# C_SOURCES	+= $(ARCH_SRC_DIR)/system_stm32f4xx.c $(ARCH_SRC_DIR)/stm32f4xx_it.c
 	C_SOURCES	+= $(ARCH_SRC_DIR)/system_stm32f4xx.c
+# C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_it.c
 	S_SOURCES	+= $(ARCH_SRC_DIR)/startup_stm32f4xx.s
 	CPPFLAGS	+= -D STM32F40XX
 	CPPFLAGS	+= -D USE_STDPERIPH_DRIVER
@@ -186,7 +186,6 @@ endif
 ifdef CONFIG_ETH
 	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4x7_eth.c \
 			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c \
-			   $(ARCH_SRC_DIR)/stm32f4x7_eth.c \
 			   $(ARCH_SRC_DIR)/stm32f4x7_eth_bsp.c
 endif
 
@@ -196,7 +195,13 @@ ifdef CONFIG_EVAL
 	CPPFLAGS	+= -D USE_STM324x7I_EVAL
 endif
 
-ifdef CONFIG_EVAL_ADUDIO_CODEC
+# dep: usart
+ifdef CONFIG_SERIAL_DEBUG
+	C_SOURCES	+= $(ARCH_SRC_DIR)/serial_debug.c
+	CPPFLAGS	+= -D SERIAL_DEBUG
+endif
+
+ifdef CONFIG_EVAL_AUDIO_CODEC
 	C_SOURCES	+= $(ARCH_SRC_DIR)/stm324x7i_eval_audio_codec.c
 endif
 
@@ -210,10 +215,12 @@ endif
 
 ifdef CONFIG_EVAL_I2C_EE
 	C_SOURCES	+= $(ARCH_SRC_DIR)/stm324x7i_eval_i2c_ee.c
+	CPPFLAGS	+= -D USE_DEFAULT_TIMEOUT_CALLBACK
 endif
 
 ifdef CONFIG_EVAL_LCD
 	C_SOURCES	+= $(ARCH_SRC_DIR)/stm324x7i_eval_lcd.c
+	CPPFLAGS	+= -D USE_LCD
 endif
 
 ifdef CONFIG_SDIO_SD
@@ -326,4 +333,4 @@ clean:
 
 # Flash the STM32F4
 burn: $(EXECUTABLES)
-	$(STLINK)/st-flash write $(OUTPUT_DIR)$(PROG_NAME_NQ).bin 0x8000000
+	@$(STLINK)/st-flash write $(OUTPUT_DIR)$(PROG_NAME_NQ).bin 0x8000000

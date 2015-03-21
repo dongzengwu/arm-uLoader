@@ -14,8 +14,8 @@ CORE4FILES	:= $(LWIP_SRC_DIR)/core/ipv4/icmp.c $(LWIP_SRC_DIR)/core/ipv4/ip.c \
 	$(LWIP_SRC_DIR)/core/ipv4/ip_frag.c $(LWIP_SRC_DIR)/core/ipv4/inet_chksum.c 
 
 # NETIFFILES: Files implementing various generic network interface functions.'
-NETIFFILES	:= $(LWIP_SRC_DIR)/netif/etharp.c
-#
+NETIFFILES	:= $(LWIP_SRC_DIR)/netif/etharp.c netconf.c ethernetif.c
+
 # LWIPFILES: All the above.
 LWIPFILES	:= $(COREFILES) $(CORE4FILES) $(NETIFFILES)
 

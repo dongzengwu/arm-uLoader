@@ -42,11 +42,11 @@
 /* Exported constants --------------------------------------------------------*/
 
 // #define USE_LCD        /* enable LCD  */
-//#define USE_DHCP       /* enable DHCP, if disabled static address is used */
+// #define USE_DHCP       /* enable DHCP, if disabled static address is used */
 
 /* Uncomment SERIAL_DEBUG to enables retarget of printf to serial port (COM1 on STM32 evalboard)
    for debug purpose */
-//#define SERIAL_DEBUG
+// #define SERIAL_DEBUG
 
 
 /* MAC ADDRESS: MAC_ADDR0:MAC_ADDR1:MAC_ADDR2:MAC_ADDR3:MAC_ADDR4:MAC_ADDR5 */
@@ -60,7 +60,7 @@
 /*Static IP ADDRESS: IP_ADDR0.IP_ADDR1.IP_ADDR2.IP_ADDR3 */
 #define IP_ADDR0   192
 #define IP_ADDR1   168
-#define IP_ADDR2   1
+#define IP_ADDR2   0
 #define IP_ADDR3   100
 
 /*NETMASK*/
@@ -72,11 +72,11 @@
 /*Gateway Address*/
 #define GW_ADDR0   192
 #define GW_ADDR1   168
-#define GW_ADDR2   1
+#define GW_ADDR2   0
 #define GW_ADDR3   1
 
 /* MII and RMII mode selection, for STM324xG-EVAL Board(MB786) RevB ***********/
-//#define RMII_MODE  // User have to provide the 50 MHz clock by soldering a 50 MHz
+#define RMII_MODE  // User have to provide the 50 MHz clock by soldering a 50 MHz
                      // oscillator (ref SM7745HEV-50.0M or equivalent) on the U3
                      // footprint located under CN3 and also removing jumper on JP5.
                      // This oscillator is not provided with the board.
@@ -84,7 +84,7 @@
                      // board User manual (UM1461).
 
 
-#define MII_MODE
+// #define MII_MODE
 
 /* Uncomment the define below to clock the PHY from external 25MHz crystal (only for MII mode) */
 #ifdef 	MII_MODE

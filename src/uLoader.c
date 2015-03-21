@@ -3,13 +3,26 @@
 #include <unistd.h>
 
 #include "stm32f4xx.h"
+#include "tm_stm32f4_usart.h"
+/* #define __TEST__ */
 #ifdef __TEST__
 #include "stm32f4x7_eth.h"
 #include "netconf.h"
 #include "uLoader.h"
+#include "serial_debug.h"
 #endif
-/* #include "serial_debug.h" */
 
+struct __FILE {
+	int dummy;
+};
+
+FILE __stdout;
+
+int fputc(int ch, FILE *f) {
+	TM_USART_Putc(USART1, ch);
+
+	return ch;
+}
 #define SYSTEMTICK_PERIOD_MS  10
 
 /*--------------- LCD Messages ---------------*/
@@ -30,14 +43,18 @@ uint32_t timingdelay;
 void LCD_LED_Init(void);
 void assert_failed(uint8_t* file, uint32_t line);
 #endif
-static void ms_delay(int ms);
+/* static void ms_delay(int ms); */
 
+/* RCC_ClocksTypeDef RCC_Clocks; */
 //Flash orange LED at about 1hz
 int main(void)
 {
+	SystemInit();
 	/* NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4); */
+	/* RCC_GetClocksFreq(&RCC_Clocks); */
 #ifdef SERIAL_DEBUG
 	DebugComPort_Init();
+	printf("hallo welt\r\n");
 #endif
 
 	/* Initialize LCD and Leds */
@@ -49,8 +66,10 @@ int main(void)
 	/* Initilaize the LwIP stack */
 	/* LwIP_Init(); */
 
-	RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN;  // enable the clock to GPIOD
-	GPIOD->MODER = (1 << 26);             // set pin 13 to be general purpose output
+	TM_USART_Init(USART6, TM_USART_PinsPack_1, 115200);
+
+	/* RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN;  // enable the clock to GPIOD */
+	/* GPIOD->MODER = (1 << 26);             // set pin 13 to be general purpose output */
 
 	for (;;) {
 		/* check if any packet received */
@@ -61,9 +80,10 @@ int main(void)
 
 		/* handle periodic timers for LwIP */
 		/* LwIP_Periodic_Handle(LocalTime); */
+		printf("USART1 Stream\n");
 
-		ms_delay(500);
-		GPIOD->ODR ^= (1 << 13);           // Toggle the pin
+		/* ms_delay(500); */
+		/* GPIOD->ODR ^= (1 << 13);           // Toggle the pin */
 	}
 
 	return EXIT_SUCCESS;
@@ -151,11 +171,11 @@ void assert_failed(uint8_t* file, uint32_t line)
 #endif
 
 //Quick hack, approximately 1ms delay
-static void ms_delay(int ms)
-{
-	while (ms-- > 0) {
-		volatile int x=5971;
-		while (x-- > 0)
-			__asm("nop");
-	}
-}
+/* static void ms_delay(int ms) */
+/* { */
+/* 	while (ms-- > 0) { */
+/* 		volatile int x=5971; */
+/* 		while (x-- > 0) */
+/* 			__asm("nop"); */
+/* 	} */
+/* } */
