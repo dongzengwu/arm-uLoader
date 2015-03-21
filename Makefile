@@ -10,6 +10,7 @@ STM_FW_DIR	:= $(HOME)/stm32_discovery_arm_gcc/STM32F4-Discovery_FW_V1.1.0/
 # stlink path for programming/debugging tools
 STLINK		:= $(HOME)/stlink/
 # all extra source files go here
+# MODULES		:= example.c netconf.c ethernetif.c
 MODULES		:= example.c
 
 ########## config end ############
@@ -21,18 +22,23 @@ OBJECTS_DIR	?= obj/
 SOURCE_DIR	?= src/
 INCLUDE_DIR	?= include/
 SCRIPTS_DIR	?= scripts/
-PROJECT_DIR	?= $(OUTPUT_DIR)../
+SELF_DIR	:= $(dir $(lastword $(MAKEFILE_LIST)))
+PROJECT_DIR	?= $(CURDIR)
+PROJECT_DIR	?= $(SELF_DIR)
+
+include $(PROJECT_DIR)/.config
 
 PROG_NAME_NQ	:= $(patsubst "%",%,$(PROG_NAME))
 EXECUTABLES	:= $(PROG_NAME_NQ).elf
-include_dirs	:= $(INCLUDE_DIR) $(PROJECT_DIR)lwip/include/
+include_dirs	:= $(INCLUDE_DIR)
+source_dirs	:= $(SOURCE_DIR)
 
 BINPATH		:= $(addprefix $(OUTPUT_DIR),$(EXECUTABLES))
 FILENAMES	:= $(basename $(EXECUTABLES))
 OBJECTS		:= $(addsuffix .o,$(FILENAMES))
 SOURCES		:= $(addsuffix .c,$(FILENAMES))
 
-CFLAGS		:= -g -O3 -Wall -Werror -Wextra -std=gnu99 -fdata-sections -ffunction-sections
+CFLAGS		:= -g -O2 -Wall -Werror -Wextra -std=gnu99 -fdata-sections -ffunction-sections
 LDFLAGS		:= -Wl,--gc-sections
 CPPFLAGS	:= -D PROG_NAME=$(patsubst %,\"%\",$(PROG_NAME_NQ))
 ASMFLAGS	:= -x assembler-with-cpp
@@ -41,18 +47,178 @@ ifeq ($(TARGET),stm32f4)
 	CPU		:= cortex-m4
 	CC		:= arm-none-eabi-gcc
 	OBJCOPY		:= arm-none-eabi-objcopy
-	ARCH_DIR	:= $(PROJECT_DIR)arch/arm/mach-stm32f4x7
-	ARCH_SRC_DIR	:= $(ARCH_DIR)/src/
-	ARCH_INC_DIR	:= $(ARCH_DIR)/include/
-	CFLAGS		+= -T$(ARCH_SRC_DIR)stm32_flash.ld
-	LDFLAGS		+= -T$(ARCH_SRC_DIR)stm32_flash.ld
+	ARCH_DIR	:= $(PROJECT_DIR)/arch/arm/mach-stm32f4x7
+	ARCH_SRC_DIR	:= $(ARCH_DIR)/src
+	ARCH_INC_DIR	:= $(ARCH_DIR)/include
+	CFLAGS		+= -T$(ARCH_SRC_DIR)/stm32_flash.ld
+	LDFLAGS		+= -T$(ARCH_SRC_DIR)/stm32_flash.ld
 	include_dirs	+= $(STM_FW_DIR)Utilities/STM32F4-Discovery
 	include_dirs	+= $(STM_FW_DIR)Libraries/CMSIS/Include
 	include_dirs	+= $(STM_FW_DIR)Libraries/CMSIS/ST/STM32F4xx/Include
 	include_dirs	+= $(STM_FW_DIR)Libraries/STM32F4xx_StdPeriph_Driver/inc
+	source_dirs	+= $(STM_FW_DIR)Libraries/STM32F4xx_StdPeriph_Driver/src
 	include_dirs	+= $(ARCH_INC_DIR)/
+# C_SOURCES	+= $(ARCH_SRC_DIR)/system_stm32f4xx.c $(ARCH_SRC_DIR)/stm32f4xx_it.c
 	C_SOURCES	+= $(ARCH_SRC_DIR)/system_stm32f4xx.c
 	S_SOURCES	+= $(ARCH_SRC_DIR)/startup_stm32f4xx.s
+	CPPFLAGS	+= -D STM32F40XX
+	CPPFLAGS	+= -D USE_STDPERIPH_DRIVER
+
+ifdef CONFIG_MISC
+	C_SOURCES	+= $(ARCH_SRC_DIR)/misc.c
+endif
+
+ifdef CONFIG_ADC
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_adc.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_CAN
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_can.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_CRC
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_crc.c
+endif
+
+ifdef CONFIG_CRYP
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_cryp.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_cryp_aes.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_cryp_des.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_cryp_tdes.c
+endif
+
+ifdef CONFIG_DAC
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_dac.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_DBGMCU
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_dbgmcu.c
+endif
+
+ifdef CONFIG_DCMI
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_dcmi.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_DMA
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_dma.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_EXTI
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_exti.c
+endif
+
+ifdef CONFIG_FLASH
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_flash.c
+endif
+
+ifdef CONFIG_FSMC
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_fsmc.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_GPIO
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_gpio.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_HASH
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_hash.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_hash_md5.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_hash_sha1.c
+endif
+
+ifdef CONFIG_I2C
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_i2c.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_PWR
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_pwr.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_RNG
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_rng.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_RTC
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_rtc.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_SDIO
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_sdio.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_SDIO
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_spi.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_SYSCFG
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_syscfg.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_TIM
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_tim.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_USART
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_usart.c
+endif
+
+ifdef CONFIG_WWDG
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_wwdg.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
+endif
+
+ifdef CONFIG_ETH
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4x7_eth.c \
+			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c \
+			   $(ARCH_SRC_DIR)/stm32f4x7_eth.c \
+			   $(ARCH_SRC_DIR)/stm32f4x7_eth_bsp.c
+endif
+
+# dep: sdio dma i2c
+ifdef CONFIG_EVAL
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm324x7i_eval.c
+	CPPFLAGS	+= -D USE_STM324x7I_EVAL
+endif
+
+ifdef CONFIG_EVAL_ADUDIO_CODEC
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm324x7i_eval_audio_codec.c
+endif
+
+ifdef CONFIG_EVAL_FSMC_SRAM
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm324x7i_eval_fsmc_sram.c
+endif
+
+ifdef CONFIG_EVAL_IOE
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm324x7i_eval_ioe.c
+endif
+
+ifdef CONFIG_EVAL_I2C_EE
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm324x7i_eval_i2c_ee.c
+endif
+
+ifdef CONFIG_EVAL_LCD
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm324x7i_eval_lcd.c
+endif
+
+ifdef CONFIG_SDIO_SD
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm324x7i_eval_sdio_sd.c
+endif
 endif
 
 CPU		?= cortex-m3
@@ -67,8 +233,6 @@ ASMFLAGS	+= -mlittle-endian -mthumb -mcpu=$(CPU) -mthumb-interwork
 ASMFLAGS	+= -mfloat-abi=hard -mfpu=fpv4-sp-d16
 
 LIBS		:= -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
-
-INCLUDEPATHS	:= $(addprefix -I ,$(include_dirs))
 
 DATE		:= `date +"%Y-%m-%d_%H-%M"`
 NULLDEVICE	:= /dev/null
@@ -86,8 +250,23 @@ ifeq (clean,$(findstring clean, $(MAKECMDGOALS)))
   endif
 endif
 
-vpath %.h $(include_dirs) $(ARCH_INC_DIR)
-vpath %.c $(SOURCE_DIR) $(ARCH_SRC_DIR)
+C_SOURCES	+= $(PROG_NAME_NQ).c $(MODULES)
+C_FILES		:= $(notdir $(C_SOURCES))
+S_FILES		:= $(notdir $(S_SOURCES))
+C_OBJECTS	:= $(addprefix $(OBJECTS_DIR),$(C_FILES:.c=.o))
+S_OBJECTS	:= $(if $(S_SOURCES), $(addprefix $(OBJECTS_DIR),$(S_FILES:.s=.o)))
+OBJECTS		:= $(C_OBJECTS) $(S_OBJECTS)
+
+MAKEDEPEND	= $(CC) -MM $(CFLAGS) $(INCLUDEPATHS) $(CPPFLAGS) $< > $(DEPENDENCY_DIR)$*.d
+
+ifdef CONFIG_LWIP
+  include $(PROJECT_DIR)/lwip/Makefile
+endif
+
+INCLUDEPATHS	:= $(addprefix -I ,$(include_dirs))
+
+vpath %.h $(include_dirs)
+vpath %.c $(source_dirs) $(ARCH_SRC_DIR) $(EXP_SRC_DIRS)
 vpath %.s $(SOURCE_DIR) $(ARCH_SRC_DIR)
 vpath %.sh $(SCRIPTS_DIR)
 vpath %.o $(OBJECTS_DIR)
@@ -99,14 +278,15 @@ vpath % $(OUTPUT_DIR)
 
 .SUFFIXES: .elf
 
-C_SOURCES	+= $(PROG_NAME_NQ).c $(MODULES)
-C_FILES		:= $(notdir $(C_SOURCES))
-S_FILES		:= $(notdir $(S_SOURCES))
-C_OBJECTS	:= $(addprefix $(OBJECTS_DIR),$(C_FILES:.c=.o))
-S_OBJECTS	:= $(if $(S_SOURCES), $(addprefix $(OBJECTS_DIR),$(S_FILES:.s=.o)))
-OBJECTS		:= $(C_OBJECTS) $(S_OBJECTS)
+.PHONY: clean doc report burn
 
 all: $(EXECUTABLES)
+
+dependencies	= $(addprefix $(DEPENDENCY_DIR),$(notdir $(OBJECTS:.o=.d)))
+
+ifneq "$(MAKECMDGOALS)" "clean"
+  -include $(dependencies)
+endif
 
 $(PROG_NAME_NQ).elf: $(OBJECTS)
 	@echo "Linking target: $@"
@@ -114,15 +294,24 @@ $(PROG_NAME_NQ).elf: $(OBJECTS)
 	$(OBJCOPY) -O ihex $(OUTPUT_DIR)$(PROG_NAME_NQ).elf $(OUTPUT_DIR)$(PROG_NAME_NQ).hex
 	$(OBJCOPY) -O binary $(OUTPUT_DIR)$(PROG_NAME_NQ).elf $(OUTPUT_DIR)$(PROG_NAME_NQ).bin
 
+# $(CC) $(CFLAGS) $(INCLUDEPATHS) $(CPPFLAGS) -c $< -o $(OBJECTS_DIR)$(@F)
 $(OBJECTS_DIR)%.o: %.c
-	@echo "Building file: $<"
-	$(CC) $(CFLAGS) $(INCLUDEPATHS) $(CPPFLAGS) -c -o $(OBJECTS_DIR)$(@F) $<
+	@echo "Compiling file: $<"
+	$(CC) -c $(CFLAGS) $(INCLUDEPATHS) $(CPPFLAGS) $< -o $(OBJECTS_DIR)$*.o
+	@echo "building dependencies for: $<"
+	$(MAKEDEPEND)
+	@mv -f $(DEPENDENCY_DIR)$*.d $(DEPENDENCY_DIR)$*.d.tmp
+	@sed -e 's|.*:|$(OBJECTS_DIR)$*.o:|' < $(DEPENDENCY_DIR)$*.d.tmp > $(DEPENDENCY_DIR)$*.d
+	@sed -e 's/.*://' -e 's/\\$$//' < $(DEPENDENCY_DIR)$*.d.tmp | fmt -1 | \
+		sed -e 's/^ *//' -e 's/$$/:/' >> $(DEPENDENCY_DIR)$*.d
+	@rm -f $(DEPENDENCY_DIR)$*.d.tmp
 
 $(OBJECTS_DIR)%.o: %.s
 	@echo "Assembling $<"
 	$(CC) $(ASMFLAGS) $(INCLUDEPATHS) -c -o $(OBJECTS_DIR)$(@F) $<
 
-.PHONY: clean doc report burn
+muh:
+	@echo $(OBJECTS)
 
 doc:
 	@cd $(DOCUMENTS_DIR); \
@@ -137,15 +326,4 @@ clean:
 
 # Flash the STM32F4
 burn: $(EXECUTABLES)
-	$(STLINK)/st-flash write $(PROG_NAME_NQ).bin 0x8000000
-
-dependencies	= $(addprefix $(DEPENDENCY_DIR),$(subst .c,.d,$(SOURCES)))
-
-ifneq "$(MAKECMDGOALS)" "clean"
-	-include $(dependencies)
-endif
-
-$(DEPENDENCY_DIR)%.d: %.c
-	@$(CC) -M $(INCLUDEPATHS) $(CPPFLAGS) $< > $@.$$$$;			\
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;	\
-	rm -f $@.$$$$
+	$(STLINK)/st-flash write $(OUTPUT_DIR)$(PROG_NAME_NQ).bin 0x8000000

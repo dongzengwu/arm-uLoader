@@ -30,6 +30,18 @@ Project documentation is done via [Latex](http://wiki.ubuntuusers.de/LATEX).
 
 `git clone https://github.com/texane/stlink.git`
 
+`cd stlink`
+
+`./autogen.sh`
+
+`./configure`
+
+`make`
+
+`sudo cp ~/stlink/49-stlinkv\*.rules /etc/udev/rules.d`
+
+`sudo udevadm control --reload-rules`
+
 ##### STM32 Libraries and Example
 
 `cd ~`

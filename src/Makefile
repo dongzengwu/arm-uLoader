@@ -5,5 +5,6 @@ OBJECTS_DIR	:= ../obj/
 SOURCE_DIR	:= ./
 INCLUDE_DIR	:= ../include
 SCRIPTS_DIR	:= ../scripts/
+PROJECT_DIR	:= $(CURDIR)/../
 
 include ../Makefile
