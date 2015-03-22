@@ -1,17 +1,17 @@
-/**	
+/**
  * |----------------------------------------------------------------------
  * | Copyright (C) Tilen Majerle, 2014
- * | 
+ * |
  * | This program is free software: you can redistribute it and/or modify
  * | it under the terms of the GNU General Public License as published by
  * | the Free Software Foundation, either version 3 of the License, or
  * | any later version.
- * |  
+ * |
  * | This program is distributed in the hope that it will be useful,
  * | but WITHOUT ANY WARRANTY; without even the implied warranty of
  * | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * | GNU General Public License for more details.
- * | 
+ * |
  * | You should have received a copy of the GNU General Public License
  * | along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * |----------------------------------------------------------------------
@@ -21,7 +21,7 @@
 /**
  * @brief Internal USART struct
  */
- 
+
 typedef struct {
 	uint8_t *Buffer;
 	uint16_t Size;
@@ -103,7 +103,7 @@ void TM_USART_Init(USART_TypeDef* USARTx, TM_USART_PinsPack_t pinspack, uint32_t
 
 	/* Set USART baudrate */
 	USART_InitStruct.USART_BaudRate = baudrate;
-	
+
 	/*
 	 * Initialize USARTx pins
 	 * Set channel for USARTx NVIC
@@ -112,13 +112,13 @@ void TM_USART_Init(USART_TypeDef* USARTx, TM_USART_PinsPack_t pinspack, uint32_t
 	if (USARTx == USART1) {
 		/* Enable USART clock */
 		RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
-		
+
 		/* Init pins */
 		TM_USART1_InitPins(pinspack);
-		
+
 		/* Set IRQ channel */
 		NVIC_InitStruct.NVIC_IRQChannel = USART1_IRQn;
-		
+
 		/* Fill default settings */
 		USART_InitStruct.USART_HardwareFlowControl = TM_USART1_HARDWARE_FLOW_CONTROL;
 		USART_InitStruct.USART_Mode = TM_USART1_MODE;
@@ -131,13 +131,13 @@ void TM_USART_Init(USART_TypeDef* USARTx, TM_USART_PinsPack_t pinspack, uint32_t
 	if (USARTx == USART2) {
 		/* Enable USART clock */
 		RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
-		
+
 		/* Init pins */
 		TM_USART2_InitPins(pinspack);
-		
+
 		/* Set IRQ channel */
 		NVIC_InitStruct.NVIC_IRQChannel = USART2_IRQn;
-		
+
 		/* Fill default settings */
 		USART_InitStruct.USART_HardwareFlowControl = TM_USART2_HARDWARE_FLOW_CONTROL;
 		USART_InitStruct.USART_Mode = TM_USART2_MODE;
@@ -150,13 +150,13 @@ void TM_USART_Init(USART_TypeDef* USARTx, TM_USART_PinsPack_t pinspack, uint32_t
 	if (USARTx == USART3) {
 		/* Enable USART clock */
 		RCC->APB1ENR |= RCC_APB1ENR_USART3EN;
-		
+
 		/* Init pins */
 		TM_USART3_InitPins(pinspack);
-		
+
 		/* Set IRQ channel */
 		NVIC_InitStruct.NVIC_IRQChannel = USART3_IRQn;
-		
+
 		/* Fill default settings */
 		USART_InitStruct.USART_HardwareFlowControl = TM_USART3_HARDWARE_FLOW_CONTROL;
 		USART_InitStruct.USART_Mode = TM_USART3_MODE;
@@ -169,13 +169,13 @@ void TM_USART_Init(USART_TypeDef* USARTx, TM_USART_PinsPack_t pinspack, uint32_t
 	if (USARTx == UART4) {
 		/* Enable UART clock */
 		RCC->APB1ENR |= RCC_APB1ENR_UART4EN;
-		
+
 		/* Init pins */
 		TM_UART4_InitPins(pinspack);
-		
+
 		/* Set IRQ channel */
 		NVIC_InitStruct.NVIC_IRQChannel = UART4_IRQn;
-		
+
 		/* Fill default settings */
 		USART_InitStruct.USART_HardwareFlowControl = TM_UART4_HARDWARE_FLOW_CONTROL;
 		USART_InitStruct.USART_Mode = TM_UART4_MODE;
@@ -191,10 +191,10 @@ void TM_USART_Init(USART_TypeDef* USARTx, TM_USART_PinsPack_t pinspack, uint32_t
 
 		/* Init pins */
 		TM_UART5_InitPins(pinspack);
-		
+
 		/* Set IRQ channel */
 		NVIC_InitStruct.NVIC_IRQChannel = UART5_IRQn;
-		
+
 		/* Fill default settings */
 		USART_InitStruct.USART_HardwareFlowControl = TM_UART5_HARDWARE_FLOW_CONTROL;
 		USART_InitStruct.USART_Mode = TM_UART5_MODE;
@@ -207,13 +207,13 @@ void TM_USART_Init(USART_TypeDef* USARTx, TM_USART_PinsPack_t pinspack, uint32_t
 	if (USARTx == USART6) {
 		/* Enable UART clock */
 		RCC->APB2ENR |= RCC_APB2ENR_USART6EN;
-		
+
 		/* Init pins */
 		TM_USART6_InitPins(pinspack);
-		
+
 		/* Set IRQ channel */
 		NVIC_InitStruct.NVIC_IRQChannel = USART6_IRQn;
-		
+
 		/* Fill default settings */
 		USART_InitStruct.USART_HardwareFlowControl = TM_USART6_HARDWARE_FLOW_CONTROL;
 		USART_InitStruct.USART_Mode = TM_USART6_MODE;
@@ -226,13 +226,13 @@ void TM_USART_Init(USART_TypeDef* USARTx, TM_USART_PinsPack_t pinspack, uint32_t
 	if (USARTx == UART7) {
 		/* Enable UART clock */
 		RCC->APB1ENR |= RCC_APB1ENR_UART7EN;
-		
+
 		/* Init pins */
 		TM_UART7_InitPins(pinspack);
-		
+
 		/* Set IRQ channel */
 		NVIC_InitStruct.NVIC_IRQChannel = UART7_IRQn;
-		
+
 		/* Fill default settings */
 		USART_InitStruct.USART_HardwareFlowControl = TM_UART7_HARDWARE_FLOW_CONTROL;
 		USART_InitStruct.USART_Mode = TM_UART7_MODE;
@@ -248,10 +248,10 @@ void TM_USART_Init(USART_TypeDef* USARTx, TM_USART_PinsPack_t pinspack, uint32_t
 
 		/* Init pins */
 		TM_UART8_InitPins(pinspack);
-		
+
 		/* Set IRQ channel */
 		NVIC_InitStruct.NVIC_IRQChannel = UART8_IRQn;
-		
+
 		/* Fill default settings */
 		USART_InitStruct.USART_HardwareFlowControl = TM_UART8_HARDWARE_FLOW_CONTROL;
 		USART_InitStruct.USART_Mode = TM_UART8_MODE;
@@ -260,16 +260,16 @@ void TM_USART_Init(USART_TypeDef* USARTx, TM_USART_PinsPack_t pinspack, uint32_t
 		USART_InitStruct.USART_WordLength = TM_UART8_WORD_LENGTH;
 	}
 #endif
-	
+
 	/* We are initialized */
 	u->Initialized = 1;
-	
+
 	/* Disable if not already */
 	USARTx->CR1 &= ~USART_CR1_UE;
-	
+
 	/* Init */
 	USART_Init(USARTx, &USART_InitStruct);
-	
+
 	/* Enable RX interrupt */
 	USARTx->CR1 |= USART_CR1_RXNEIE;
 
@@ -278,7 +278,7 @@ void TM_USART_Init(USART_TypeDef* USARTx, TM_USART_PinsPack_t pinspack, uint32_t
 	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = TM_USART_NVIC_PRIORITY;
 	NVIC_InitStruct.NVIC_IRQChannelSubPriority = TM_USART_INT_GetSubPriority(USARTx);
 	NVIC_Init(&NVIC_InitStruct);
-	
+
 	/* Enable USART peripheral */
 	USARTx->CR1 |= USART_CR1_UE;
 }
@@ -286,7 +286,7 @@ void TM_USART_Init(USART_TypeDef* USARTx, TM_USART_PinsPack_t pinspack, uint32_t
 uint8_t TM_USART_Getc(USART_TypeDef* USARTx) {
 	int8_t c = 0;
 	TM_USART_t* u = TM_USART_INT_GetUsart(USARTx);
-	
+
 	/* Check if we have any data in buffer */
 	if (u->Num > 0) {
 		if (u->Out == u->Size) {
@@ -301,12 +301,12 @@ uint8_t TM_USART_Getc(USART_TypeDef* USARTx) {
 
 uint16_t TM_USART_Gets(USART_TypeDef* USARTx, char* buffer, uint16_t bufsize) {
 	uint16_t i = 0;
-	
+
 	/* Check for any data on USART */
 	if (TM_USART_BufferEmpty(USARTx) || (!TM_USART_FindCharacter(USARTx, '\n') && !TM_USART_BufferFull(USARTx))) {
 		return 0;
 	}
-	
+
 	/* If available buffer size is more than 0 characters */
 	while (i < (bufsize - 1)) {
 		/* We have available data */
@@ -320,9 +320,9 @@ uint16_t TM_USART_Gets(USART_TypeDef* USARTx, char* buffer, uint16_t bufsize) {
 			i++;
 		}
 	}
-	
+
 	/* Add zero to the end of string */
-	buffer[i] = 0;               
+	buffer[i] = 0;
 
 	return (i);
 }
@@ -339,7 +339,7 @@ uint8_t TM_USART_BufferFull(USART_TypeDef* USARTx) {
 
 void TM_USART_ClearBuffer(USART_TypeDef* USARTx) {
 	TM_USART_t* u = TM_USART_INT_GetUsart(USARTx);
-	
+
 	u->Num = 0;
 	u->In = 0;
 	u->Out = 0;
@@ -348,11 +348,11 @@ void TM_USART_ClearBuffer(USART_TypeDef* USARTx) {
 uint8_t TM_USART_FindCharacter(USART_TypeDef* USARTx, uint8_t c) {
 	uint16_t num, out;
 	TM_USART_t* u = TM_USART_INT_GetUsart(USARTx);
-	
+
 	/* Temp variables */
 	num = u->Num;
 	out = u->Out;
-	
+
 	while (num > 0) {
 		/* Check overflow */
 		if (out == u->Size) {
@@ -365,7 +365,7 @@ uint8_t TM_USART_FindCharacter(USART_TypeDef* USARTx, uint8_t c) {
 		out++;
 		num--;
 	}
-	
+
 	/* Character is not in buffer */
 	return 0;
 }
@@ -376,7 +376,7 @@ void TM_USART_Puts(USART_TypeDef* USARTx, char* str) {
 	if (u->Initialized == 0) {
 		return;
 	}
-	
+
 	while (*str) {
 		/* Wait to be ready, buffer empty */
 		while (!(USARTx->SR & USART_FLAG_TXE));
@@ -391,7 +391,7 @@ void TM_USART_Putc(USART_TypeDef* USARTx, volatile char c) {
 	if (u->Initialized == 0) {
 		return;
 	}
-	
+
 	/* Wait to be ready, buffer empty */
 	while (!(USARTx->SR & USART_FLAG_TXE));
 	/* Send data */
@@ -420,7 +420,7 @@ __weak void TM_USART_InitCustomPinsCallback(USART_TypeDef* USARTx) {
 
 TM_USART_t* TM_USART_INT_GetUsart(USART_TypeDef* USARTx) {
 	TM_USART_t* u;
-	
+
 #ifdef USE_USART1
 	if (USARTx == USART1) {
 		u = &TM_USART1;
@@ -467,7 +467,7 @@ TM_USART_t* TM_USART_INT_GetUsart(USART_TypeDef* USARTx) {
 
 uint8_t TM_USART_INT_GetSubPriority(USART_TypeDef* USARTx) {
 	uint8_t u;
-	
+
 #ifdef USE_USART1
 	if (USARTx == USART1) {
 		u = 0;
@@ -508,12 +508,12 @@ uint8_t TM_USART_INT_GetSubPriority(USART_TypeDef* USARTx) {
 		u = 8;
 	}
 #endif
-	
+
 	return u;
 }
 
 #ifdef USE_USART1
-void TM_USART1_InitPins(TM_USART_PinsPack_t pinspack) {	
+void TM_USART1_InitPins(TM_USART_PinsPack_t pinspack) {
 	/* Init pins */
 #if defined(GPIOA)
 	if (pinspack == TM_USART_PinsPack_1) {
@@ -690,7 +690,7 @@ void USART2_IRQHandler(void) {
 		#ifdef TM_USART2_USE_CUSTOM_IRQ
 			/* Call user function */
 			TM_USART2_ReceiveHandler(USART2->DR);
-		#else 
+		#else
 			/* Put received data into internal buffer */
 			TM_USART_INT_InsertToBuffer(&TM_USART2, USART2->DR);
 		#endif

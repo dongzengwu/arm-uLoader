@@ -8,9 +8,18 @@
 #include "serial_debug.h"
 #endif
 
+#define ENV_SYSCORECLK		"SYSCORECLK"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
+
+static inline int parser(const char *command, const size_t maxbuf);
+static inline int cmd_echo(const char *command, const size_t maxbuf);
+static inline int printenv(const char **env);
+
+extern char **environ;
 
 int _write(int file, char *ptr, int len)
 {
@@ -79,6 +88,8 @@ static void ms_delay(int ms);
 //Flash orange LED at about 1hz
 int main(void)
 {
+	environ = calloc(1, sizeof(char *));
+	*environ = NULL;
 	/* is atm called at startupscript */
 	/* SystemInit(); */
 	/* NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4); */
@@ -118,7 +129,8 @@ int main(void)
 		/* LwIP_Periodic_Handle(LocalTime); */
 		/* TM_USART_Puts(USART6, "Hallo Welt\r\n"); */
 		if (TM_USART_Gets(USART6, buffer, 64) != 0) {
-			printf("%s", buffer);
+			parser(buffer, 64);
+
 			printf("\r%s> ", PROG_NAME);
 		}
 		/* ret = scanf("%s", buffer); */
@@ -130,7 +142,53 @@ int main(void)
 		GPIOD->ODR ^= (1 << 13);           // Toggle the pin
 	}
 
+	free(environ);
+
 	return EXIT_SUCCESS;
+}
+
+static inline int parser(const char *command, const size_t maxbuf)
+{
+	if (strncmp(command, "echo ", 5) == 0)
+		cmd_echo(command, maxbuf);
+	else if (strncmp(command, "printenv", 8) == 0)
+		printenv((const char **) environ);
+	else if (strncmp(command, "env", 3) == 0)
+		printenv((const char **) environ);
+	else
+		printf("unknown command: %.*s\n",
+			maxbuf, command);
+
+	return 0;
+}
+
+static inline int cmd_echo(const char *command, const size_t maxbuf)
+{
+	/* TODO implement environ + loop over it */
+	if (strncmp(command + 5, "$" ENV_SYSCORECLK, sizeof(ENV_SYSCORECLK)) == 0) {
+		printf("SYSCORECLK: %u\n",
+			(unsigned int) SystemCoreClock);
+	} else {
+		printf("%.5s%s\n", command, "$" ENV_SYSCORECLK);
+		printf("%s\n", command + 5);
+	}
+
+	return 0;
+}
+
+static inline int printenv(const char **env)
+{
+	int i = 0;
+
+	printf("%s=%u\n",
+		ENV_SYSCORECLK, (unsigned int) SystemCoreClock);
+	printf("%s=%u\n",
+		"HSE_VALUE", (unsigned int) HSE_VALUE);
+
+	while (env[i])
+		printf("%s\n", env[i++]);
+
+	return 0;
 }
 
 #ifdef __TEST__
