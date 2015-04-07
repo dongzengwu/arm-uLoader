@@ -2,26 +2,41 @@
   ******************************************************************************
   * @file    netconf.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    31-July-2013
+  * @version V1.0.0
+  * @date    31-October-2011
   * @brief   Network connection configuration
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
+  * <h2><center>&copy; Portions COPYRIGHT 2011 STMicroelectronics</center></h2>
+  ******************************************************************************
+  */
+/**
+  ******************************************************************************
+  * <h2><center>&copy; Portions COPYRIGHT 2012 Embest Tech. Co., Ltd.</center></h2>
+  * @file    netconf.c
+  * @author  CMP Team
+  * @version V1.0.0
+  * @date    28-December-2012
+  * @brief   Network connection configuration
+  *          Modified to support the STM32F4DISCOVERY, STM32F4DIS-BB and
+  *          STM32F4DIS-LCD modules.
+  ******************************************************************************
+  * @attention
   *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  *
+  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  * TIME. AS A RESULT, Embest SHALL NOT BE HELD LIABLE FOR ANY DIRECT, INDIRECT
+  * OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE CONTENT
+  * OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING INFORMATION
+  * CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   ******************************************************************************
   */
 
@@ -29,7 +44,6 @@
 #include "lwip/mem.h"
 #include "lwip/memp.h"
 #include "lwip/tcp.h"
-#include "lwip/tcp_impl.h"
 #include "lwip/udp.h"
 #include "netif/etharp.h"
 #include "lwip/dhcp.h"
@@ -42,9 +56,17 @@
 #define MAX_DHCP_TRIES        4
 
 /* Private define ------------------------------------------------------------*/
+typedef enum
+{
+  DHCP_START=0,
+  DHCP_WAIT_ADDRESS,
+  DHCP_ADDRESS_ASSIGNED,
+  DHCP_TIMEOUT
+}
+DHCP_State_TypeDef;
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-struct netif gnetif;
+struct netif netif;
 uint32_t TCPTimer = 0;
 uint32_t ARPTimer = 0;
 uint32_t IPaddress = 0;
@@ -52,26 +74,23 @@ uint32_t IPaddress = 0;
 #ifdef USE_DHCP
 uint32_t DHCPfineTimer = 0;
 uint32_t DHCPcoarseTimer = 0;
-__IO uint8_t DHCP_state;
+DHCP_State_TypeDef DHCP_state = DHCP_START;
 #endif
-extern __IO uint32_t  EthStatus;
 
 /* Private functions ---------------------------------------------------------*/
 void LwIP_DHCP_Process_Handle(void);
-
-
 /**
-* @brief  Initializes the lwIP stack
-* @param  None
-* @retval None
-*/
+  * @brief  Initializes the lwIP stack
+  * @param  None
+  * @retval None
+  */
 void LwIP_Init(void)
 {
   struct ip_addr ipaddr;
   struct ip_addr netmask;
   struct ip_addr gw;
 #ifndef USE_DHCP
-  uint8_t iptab[4] = {0};
+  uint8_t iptab[4];
   uint8_t iptxt[20];
 #endif
 
@@ -89,130 +108,86 @@ void LwIP_Init(void)
   IP4_ADDR(&ipaddr, IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
   IP4_ADDR(&netmask, NETMASK_ADDR0, NETMASK_ADDR1 , NETMASK_ADDR2, NETMASK_ADDR3);
   IP4_ADDR(&gw, GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
+
+#ifdef USE_LCD
+  iptab[0] = IP_ADDR3;
+  iptab[1] = IP_ADDR2;
+  iptab[2] = IP_ADDR1;
+  iptab[3] = IP_ADDR0;
+
+  sprintf((char*)iptxt, "  %d.%d.%d.%d", iptab[3], iptab[2], iptab[1], iptab[0]);
+
+  LCD_DisplayStringLine(Line8, (uint8_t*)"  Static IP address   ");
+  LCD_DisplayStringLine(Line9, iptxt);
+#endif
 #endif
 
   /* - netif_add(struct netif *netif, struct ip_addr *ipaddr,
-  struct ip_addr *netmask, struct ip_addr *gw,
-  void *state, err_t (* init)(struct netif *netif),
-  err_t (* input)(struct pbuf *p, struct netif *netif))
+            struct ip_addr *netmask, struct ip_addr *gw,
+            void *state, err_t (* init)(struct netif *netif),
+            err_t (* input)(struct pbuf *p, struct netif *netif))
 
-  Adds your network interface to the netif_list. Allocate a struct
+   Adds your network interface to the netif_list. Allocate a struct
   netif and pass a pointer to this structure as the first argument.
   Give pointers to cleared ip_addr structures when using DHCP,
   or fill them with sane numbers otherwise. The state pointer may be NULL.
 
   The init function pointer must point to a initialization function for
   your ethernet netif interface. The following code illustrates it's use.*/
-  netif_add(&gnetif, &ipaddr, &netmask, &gw, NULL, &ethernetif_init, &ethernet_input);
+  netif_add(&netif, &ipaddr, &netmask, &gw, NULL, &ethernetif_init, &ethernet_input);
 
   /*  Registers the default network interface.*/
-  netif_set_default(&gnetif);
+  netif_set_default(&netif);
 
-  if (EthStatus == (ETH_INIT_FLAG | ETH_LINK_FLAG))
-  {
-    /* Set Ethernet link flag */
-    gnetif.flags |= NETIF_FLAG_LINK_UP;
-
-    /* When the netif is fully configured this function must be called */
-    netif_set_up(&gnetif);
-
-#ifdef USE_DHCP
-    DHCP_state = DHCP_START;
-#else
-#ifdef USE_LCD
-
-    iptab[0] = IP_ADDR3;
-    iptab[1] = IP_ADDR2;
-    iptab[2] = IP_ADDR1;
-    iptab[3] = IP_ADDR0;
-
-    sprintf((char*)iptxt, "  %d.%d.%d.%d", iptab[3], iptab[2], iptab[1], iptab[0]);
-
-    LCD_DisplayStringLine(Line8, (uint8_t*)"  Static IP address   ");
-    LCD_DisplayStringLine(Line9, iptxt);
-#endif
-#endif /* USE_DHCP */
-  }
-  else
-  {
-    /* When the netif link is down this function must be called */
-    netif_set_down(&gnetif);
-
-#ifdef USE_DHCP
-    DHCP_state = DHCP_LINK_DOWN;
-#endif /* USE_DHCP */
-#ifdef USE_LCD
-    /* Set the LCD Text Color */
-    LCD_SetTextColor(Red);
-
-    /* Display message on the LCD */
-    LCD_DisplayStringLine(Line5, (uint8_t*)"  Network Cable is  ");
-    LCD_DisplayStringLine(Line6, (uint8_t*)"    not connected   ");
-
-    /* Set the LCD Text Color */
-    LCD_SetTextColor(White);
-#endif
-  }
-
-  /* Set the link callback function, this function is called on change of link status*/
-  netif_set_link_callback(&gnetif, ETH_link_callback);
+  /*  When the netif is fully configured this function must be called.*/
+  netif_set_up(&netif);
 }
 
 /**
-* @brief  Called when a frame is received
-* @param  None
-* @retval None
-*/
+  * @brief  Called when a frame is received
+  * @param  None
+  * @retval None
+  */
 void LwIP_Pkt_Handle(void)
 {
   /* Read a received packet from the Ethernet buffers and send it to the lwIP for handling */
-  ethernetif_input(&gnetif);
+  ethernetif_input(&netif);
 }
 
 /**
-* @brief  LwIP periodic tasks
-* @param  localtime the current LocalTime value
-* @retval None
-*/
+  * @brief  LwIP periodic tasks
+  * @param  localtime the current LocalTime value
+  * @retval None
+  */
 void LwIP_Periodic_Handle(__IO uint32_t localtime)
 {
 #if LWIP_TCP
   /* TCP periodic process every 250 ms */
-  if (localtime - TCPTimer >= TCP_TMR_INTERVAL)
-  {
+  if (localtime - TCPTimer >= TCP_TMR_INTERVAL) {
     TCPTimer =  localtime;
     tcp_tmr();
   }
 #endif
 
   /* ARP periodic process every 5s */
-  if ((localtime - ARPTimer) >= ARP_TMR_INTERVAL)
-  {
+  if ((localtime - ARPTimer) >= ARP_TMR_INTERVAL) {
     ARPTimer =  localtime;
     etharp_tmr();
   }
 
 #ifdef USE_DHCP
   /* Fine DHCP periodic process every 500ms */
-  if (localtime - DHCPfineTimer >= DHCP_FINE_TIMER_MSECS)
-  {
+  if (localtime - DHCPfineTimer >= DHCP_FINE_TIMER_MSECS) {
     DHCPfineTimer =  localtime;
     dhcp_fine_tmr();
-    if ((DHCP_state != DHCP_ADDRESS_ASSIGNED) &&
-        (DHCP_state != DHCP_TIMEOUT) &&
-          (DHCP_state != DHCP_LINK_DOWN))
-    {
-      /* toggle LED1 to indicate DHCP on-going process */
-      STM_EVAL_LEDToggle(LED1);
-
+    if ((DHCP_state != DHCP_ADDRESS_ASSIGNED)&&(DHCP_state != DHCP_TIMEOUT)) {
       /* process DHCP state machine */
       LwIP_DHCP_Process_Handle();
     }
   }
 
   /* DHCP Coarse periodic process every 60s */
-  if (localtime - DHCPcoarseTimer >= DHCP_COARSE_TIMER_MSECS)
-  {
+  if (localtime - DHCPcoarseTimer >= DHCP_COARSE_TIMER_MSECS) {
     DHCPcoarseTimer =  localtime;
     dhcp_coarse_tmr();
   }
@@ -222,27 +197,25 @@ void LwIP_Periodic_Handle(__IO uint32_t localtime)
 
 #ifdef USE_DHCP
 /**
-* @brief  LwIP_DHCP_Process_Handle
-* @param  None
-* @retval None
-*/
+  * @brief  LwIP_DHCP_Process_Handle
+  * @param  None
+  * @retval None
+  */
 void LwIP_DHCP_Process_Handle()
 {
   struct ip_addr ipaddr;
   struct ip_addr netmask;
   struct ip_addr gw;
-  uint8_t iptab[4] = {0};
+  uint8_t iptab[4];
   uint8_t iptxt[20];
 
   switch (DHCP_state)
   {
-  case DHCP_START:
+    case DHCP_START:
     {
-      DHCP_state = DHCP_WAIT_ADDRESS;
-      dhcp_start(&gnetif);
-      /* IP address should be set to 0
-         every time we want to assign a new DHCP address */
+      dhcp_start(&netif);
       IPaddress = 0;
+      DHCP_state = DHCP_WAIT_ADDRESS;
 #ifdef USE_LCD
       LCD_DisplayStringLine(Line4, (uint8_t*)"     Looking for    ");
       LCD_DisplayStringLine(Line5, (uint8_t*)"     DHCP server    ");
@@ -251,17 +224,16 @@ void LwIP_DHCP_Process_Handle()
     }
     break;
 
-  case DHCP_WAIT_ADDRESS:
+    case DHCP_WAIT_ADDRESS:
     {
       /* Read the new IP address */
-      IPaddress = gnetif.ip_addr.addr;
+      IPaddress = netif.ip_addr.addr;
 
-      if (IPaddress!=0)
-      {
+      if (IPaddress!=0) {
         DHCP_state = DHCP_ADDRESS_ASSIGNED;
 
         /* Stop DHCP */
-        dhcp_stop(&gnetif);
+        dhcp_stop(&netif);
 
 #ifdef USE_LCD
         iptab[0] = (uint8_t)(IPaddress >> 24);
@@ -280,23 +252,19 @@ void LwIP_DHCP_Process_Handle()
         LCD_DisplayStringLine(Line8, (uint8_t*)"  by a DHCP server  ");
         LCD_DisplayStringLine(Line9, iptxt);
 #endif
-        STM_EVAL_LEDOn(LED1);
-      }
-      else
-      {
+      } else {
         /* DHCP timeout */
-        if (gnetif.dhcp->tries > MAX_DHCP_TRIES)
-        {
+        if (netif.dhcp->tries > MAX_DHCP_TRIES) {
           DHCP_state = DHCP_TIMEOUT;
 
           /* Stop DHCP */
-          dhcp_stop(&gnetif);
+          dhcp_stop(&netif);
 
           /* Static address used */
           IP4_ADDR(&ipaddr, IP_ADDR0 ,IP_ADDR1 , IP_ADDR2 , IP_ADDR3 );
           IP4_ADDR(&netmask, NETMASK_ADDR0, NETMASK_ADDR1, NETMASK_ADDR2, NETMASK_ADDR3);
           IP4_ADDR(&gw, GW_ADDR0, GW_ADDR1, GW_ADDR2, GW_ADDR3);
-          netif_set_addr(&gnetif, &ipaddr , &netmask, &gw);
+          netif_set_addr(&netif, &ipaddr , &netmask, &gw);
 
 #ifdef USE_LCD
           LCD_DisplayStringLine(Line7, (uint8_t*)"    DHCP timeout    ");
@@ -315,14 +283,13 @@ void LwIP_DHCP_Process_Handle()
           LCD_DisplayStringLine(Line8, (uint8_t*)"  Static IP address   ");
           LCD_DisplayStringLine(Line9, iptxt);
 #endif
-          STM_EVAL_LEDOn(LED1);
         }
       }
     }
     break;
-  default: break;
+    default: break;
   }
 }
 #endif
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+/*********** Portions COPYRIGHT 2012 Embest Tech. Co., Ltd.*****END OF FILE****/

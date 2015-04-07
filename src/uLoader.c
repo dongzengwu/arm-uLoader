@@ -100,18 +100,18 @@ int main(void)
 #endif
 
 	/* Initialize LCD and Leds */
-	/* LCD_LED_Init(); */
+	LCD_LED_Init();
 
 	/* configure ethernet (GPIOs, clocks, MAC, DMA) */
-	/* ETH_BSP_Config(); */
+	ETH_BSP_Config();
 
 	/* Initilaize the LwIP stack */
-	/* LwIP_Init(); */
+	LwIP_Init();
 
 	TM_USART_Init(USART6, TM_USART_PinsPack_1, 115200);
 
-	RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN;  // enable the clock to GPIOD
-	GPIOD->MODER = (1 << 26);             // set pin 13 to be general purpose output
+	/* RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN;  // enable the clock to GPIOD */
+	/* GPIOD->MODER = (1 << 26);             // set pin 13 to be general purpose output */
 
 	setbuf(stdout, NULL);
 	char buffer[64] = {};
@@ -129,7 +129,7 @@ int main(void)
 		/* LwIP_Periodic_Handle(LocalTime); */
 		/* TM_USART_Puts(USART6, "Hallo Welt\r\n"); */
 		if (TM_USART_Gets(USART6, buffer, 64) != 0) {
-			parser(buffer, 64);
+			parser(buffer, sizeof(buffer));
 
 			printf("\r%s> ", PROG_NAME);
 		}
@@ -138,8 +138,17 @@ int main(void)
 		/* buffer[0] = TM_USART_Getc(USART6); */
 		/* printf("zeichen: %c\n", buffer[0]); */
 
+		/* check if any packet received */
+		if (ETH_CheckFrameReceived()) {
+			/* process received ethernet packet */
+			LwIP_Pkt_Handle();
+		}
+
+		/* handle periodic timers for LwIP */
+		LwIP_Periodic_Handle(LocalTime);
+
 		ms_delay(500);
-		GPIOD->ODR ^= (1 << 13);           // Toggle the pin
+		/* GPIOD->ODR ^= (1 << 13);           // Toggle the pin */
 	}
 
 	free(environ);
@@ -180,6 +189,8 @@ static inline int printenv(const char **env)
 {
 	int i = 0;
 
+	SystemCoreClockUpdate();
+
 	printf("%s=%u\n",
 		ENV_SYSCORECLK, (unsigned int) SystemCoreClock);
 	printf("%s=%u\n",
@@ -207,16 +218,6 @@ void Delay(uint32_t nCount)
 }
 
 /**
-  * @brief  Updates the system local time
-  * @param  None
-  * @retval None
-  */
-void Time_Update(void)
-{
-	LocalTime += SYSTEMTICK_PERIOD_MS;
-}
-
-/**
   * @brief  Initializes the STM324xG-EVAL's LCD and LEDs resources
   * @param  None
   * @retval None
@@ -225,14 +226,8 @@ void LCD_LED_Init(void)
 {
 #ifdef USE_LCD
 	/* Initialize the STM324xG-EVAL's LCD */
-	STM324xG_LCD_Init();
+	STM32f4_Discovery_LCD_Init();
 #endif
-
-	/* Initialize STM324xG-EVAL's LEDs */
-	STM_EVAL_LEDInit(LED1);
-	STM_EVAL_LEDInit(LED2);
-	STM_EVAL_LEDInit(LED3);
-	STM_EVAL_LEDInit(LED4);
 
 #ifdef USE_LCD
 	/* Clear the LCD */
@@ -280,4 +275,14 @@ static void ms_delay(int ms)
 		while (x-- > 0)
 			__asm("nop");
 	}
+}
+
+/**
+  * @brief  Updates the system local time
+  * @param  None
+  * @retval None
+  */
+void Time_Update(void)
+{
+	LocalTime += SYSTEMTICK_PERIOD_MS;
 }
