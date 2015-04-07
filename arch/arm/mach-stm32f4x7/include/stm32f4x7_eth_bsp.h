@@ -2,29 +2,43 @@
   ******************************************************************************
   * @file    stm32f4x7_eth_bsp.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    31-July-2013
+  * @version V1.0.0
+  * @date    31-October-2011 
   * @brief   Header for stm32f4x7_eth_bsp.c file.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  *
+  * <h2><center>&copy; Portions COPYRIGHT 2011 STMicroelectronics</center></h2>
   ******************************************************************************
   */
-
+/**
+  ******************************************************************************
+  * <h2><center>&copy; Portions COPYRIGHT 2012 Embest Tech. Co., Ltd.</center></h2>
+  * @file    stm32f4x7_eth_bsp.h
+  * @author  CMP Team
+  * @version V1.0.0
+  * @date    28-December-2012
+  * @brief   Header for stm32f4x7_eth_bsp.c file.
+  *          Modified to support the STM32F4DISCOVERY, STM32F4DIS-BB and
+  *          STM32F4DIS-LCD modules. 
+  ******************************************************************************
+  * @attention
+  *
+  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  * TIME. AS A RESULT, Embest SHALL NOT BE HELD LIABLE FOR ANY DIRECT, INDIRECT
+  * OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE CONTENT
+  * OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING INFORMATION
+  * CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  ******************************************************************************
+  */ 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4x7_ETH_BSP_H
 #define __STM32F4x7_ETH_BSP_H
@@ -34,45 +48,17 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#if defined (USE_STM324xG_EVAL)
-  #include "stm324xg_eval.h"
-  #include "stm324xg_eval_lcd.h"
-
-#elif defined (USE_STM324x7I_EVAL)
-  #include "stm324x7i_eval.h"
-  #include "stm324x7i_eval_lcd.h"
-
-#else
- #error "Please select first the Evaluation board used in your application (in Project Options)"
-#endif
-
-#include "lwip/netif.h"
+#include "stm32f4xx.h"
+#include "stm32f4_discovery.h"
+#include "stm32f4_discovery_lcd.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
-#define DP83848_PHY_ADDRESS       ((uint16_t) 0x01)
-
-/* Specific defines for EXTI line, used to manage Ethernet link status */
-#define ETH_LINK_EXTI_LINE             EXTI_Line14
-#define ETH_LINK_EXTI_PORT_SOURCE      EXTI_PortSourceGPIOB
-#define ETH_LINK_EXTI_PIN_SOURCE       EXTI_PinSource14
-#define ETH_LINK_EXTI_IRQn             EXTI15_10_IRQn
-/* PB14 */
-#define ETH_LINK_PIN                   GPIO_Pin_14
-#define ETH_LINK_GPIO_PORT             GPIOB
-#define ETH_LINK_GPIO_CLK              RCC_AHB1Periph_GPIOB
-
-/* Ethernet Flags for EthStatus variable */
-#define ETH_INIT_FLAG           0x01 /* Ethernet Init Flag */
-#define ETH_LINK_FLAG           0x10 /* Ethernet Link Flag */
+#define LAN8720_PHY_ADDRESS       0x01 /* Relative to STM324xG-EVAL Board */
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void  ETH_BSP_Config(void);
-uint32_t Eth_Link_PHYITConfig(uint16_t PHYAddress);
-void Eth_Link_EXTIConfig(void);
-void Eth_Link_ITHandler(uint16_t PHYAddress);
-void ETH_link_callback(struct netif *netif);
 
 #ifdef __cplusplus
 }
@@ -81,4 +67,4 @@ void ETH_link_callback(struct netif *netif);
 #endif /* __STM32F4x7_ETH_BSP_H */
 
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+/*********** Portions COPYRIGHT 2012 Embest Tech. Co., Ltd.*****END OF FILE****/

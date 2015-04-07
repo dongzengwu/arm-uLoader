@@ -38,7 +38,7 @@ OBJECTS		:= $(addsuffix .o,$(FILENAMES))
 SOURCES		:= $(addsuffix .c,$(FILENAMES))
 
 CFLAGS		:= -g -O2 -Wall -Werror -Wextra -std=gnu99 -fdata-sections -ffunction-sections \
-	-Wno-unused-parameter -Wno-uninitialized
+		   -Wno-unused-parameter -Wno-uninitialized
 LDFLAGS		:= -Wl,--gc-sections
 CPPFLAGS	:= -D PROG_NAME=$(patsubst %,\"%\",$(PROG_NAME_NQ))
 ASMFLAGS	:= -x assembler-with-cpp
@@ -52,18 +52,20 @@ ifeq ($(TARGET),stm32f4)
 	ARCH_INC_DIR	:= $(ARCH_DIR)/include
 	CFLAGS		+= -T$(ARCH_SRC_DIR)/stm32_flash.ld
 	LDFLAGS		+= -T$(ARCH_SRC_DIR)/stm32_flash.ld
+	include_dirs	+= $(ARCH_INC_DIR)/
 	include_dirs	+= $(STM_FW_DIR)Utilities/STM32F4-Discovery
 	include_dirs	+= $(STM_FW_DIR)Libraries/CMSIS/Include
 	include_dirs	+= $(STM_FW_DIR)Libraries/CMSIS/ST/STM32F4xx/Include
 	include_dirs	+= $(STM_FW_DIR)Libraries/STM32F4xx_StdPeriph_Driver/inc
 	source_dirs	+= $(STM_FW_DIR)Libraries/STM32F4xx_StdPeriph_Driver/src
-	include_dirs	+= $(ARCH_INC_DIR)/
 	C_SOURCES	+= $(ARCH_SRC_DIR)/system_stm32f4xx.c
-# C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_it.c
+	C_SOURCES	+= stm32f4_discovery.c stm32f4_discovery_lcd.c stm32f4_discovery_debug.c
+	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_it.c
 	S_SOURCES	+= $(ARCH_SRC_DIR)/startup_stm32f4xx.s
-	CPPFLAGS	+= -D STM32F40XX
+	CPPFLAGS	+= -D STM32F4XX
 	CPPFLAGS	+= -D USE_STDPERIPH_DRIVER
 	CPPFLAGS	+= -D USE_USART6
+	CPPFLAGS	+= -D __TEST__
 # CPPFLAGS	+= -D HSE_VALUE=8000000
 
 ifdef CONFIG_MISC
@@ -252,7 +254,7 @@ $(shell mkdir $(OBJECTS_DIR)>$(NULLDEVICE) 2>&1)
 $(shell mkdir $(OUTPUT_DIR)>$(NULLDEVICE) 2>&1)
 $(shell mkdir $(DEPENDENCY_DIR)>$(NULLDEVICE) 2>&1)
 ifeq (clean,$(findstring clean, $(MAKECMDGOALS)))
-  ifneq ($(filter $(MAKECMDGOALS),all burn doc report),)
+  ifneq ($(filter $(MAKECMDGOALS),all flash doc report),)
     $(shell $(RMFILES) $(OBJECTS_DIR)$(ALLFILES)>$(NULLDEVICE) 2>&1)
     $(shell $(RMFILES) $(OUTPUT_DIR)$(ALLFILES)>$(NULLDEVICE) 2>&1)
     $(shell $(RMFILES) $(DEPENDENCY_DIR)$(ALLFILES)>$(NULLDEVICE) 2>&1)
@@ -287,7 +289,7 @@ vpath % $(OUTPUT_DIR)
 
 .SUFFIXES: .elf
 
-.PHONY: clean doc report burn
+.PHONY: clean doc report flash show
 
 all: $(EXECUTABLES)
 
@@ -303,7 +305,6 @@ $(PROG_NAME_NQ).elf: $(OBJECTS)
 	$(OBJCOPY) -O ihex $(OUTPUT_DIR)$(PROG_NAME_NQ).elf $(OUTPUT_DIR)$(PROG_NAME_NQ).hex
 	$(OBJCOPY) -O binary $(OUTPUT_DIR)$(PROG_NAME_NQ).elf $(OUTPUT_DIR)$(PROG_NAME_NQ).bin
 
-# $(CC) $(CFLAGS) $(INCLUDEPATHS) $(CPPFLAGS) -c $< -o $(OBJECTS_DIR)$(@F)
 $(OBJECTS_DIR)%.o: %.c
 	@echo "Compiling file: $<"
 	$(CC) -c $(CFLAGS) $(INCLUDEPATHS) $(CPPFLAGS) $< -o $(OBJECTS_DIR)$*.o
@@ -319,8 +320,9 @@ $(OBJECTS_DIR)%.o: %.s
 	@echo "Assembling $<"
 	$(CC) $(ASMFLAGS) $(INCLUDEPATHS) -c -o $(OBJECTS_DIR)$(@F) $<
 
-muh:
+show:
 	@echo $(OBJECTS)
+	@echo $(C_SOURCES)
 
 doc:
 	@cd $(DOCUMENTS_DIR); \
@@ -334,5 +336,5 @@ clean:
 	-rm -f $(BINPATH) $(OUTPUT_DIR)* $(DEPENDENCY_DIR)*.d $(OBJECTS_DIR)*.o
 
 # Flash the STM32F4
-burn: $(EXECUTABLES)
+flash: $(EXECUTABLES)
 	@$(STLINK)/st-flash write $(OUTPUT_DIR)$(PROG_NAME_NQ).bin 0x8000000
