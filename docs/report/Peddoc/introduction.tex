@@ -44,6 +44,8 @@ Next it is necessary to initialise the hardware, that would in turn be needed to
 The "STM32f407 discovery board" offers three different methodes to boot up the hardware.\\
 In order to switch between the three different boot methods, the Boot-Pins BOOT1
 and BOOT2 could be set:\\\\
+\begin{table}
+\caption{Boot-Pin Function}
 \begin{tabular}{|c|c|l|l|}
 \hline \hline
   BOOT1 & BOOT2 & Boot-Mode & Adresse\\ \hline
@@ -53,7 +55,8 @@ and BOOT2 could be set:\\\\
 \hline
  1  & 1 & SRAM & 0x2000\_0000\\
 \hline
-\end{tabular}\\\\
+\end{tabular}
+\end{table}\\\\
 Der ROM, hier System Memory, beinhaltet den, vom Hersteller, mitgegebenen
  Bootloader.\\
 Wie man den Speicher dann belegt ist einem freigestellt. Man muss dann darauf
@@ -78,6 +81,8 @@ handelt es sich um einen Debug-Port, der speziell daf\"ur entwickelt wurde
  um MCU bzw. Projekte mit MCU, bei denen so wenig wie m\"oglich Pins verwendet
  werden sollen. \\
 Dieser Port besteht aus den Leitungen folgender Tabelle:\\\\
+\begin{table}
+\caption{SWD PINOUT}
 \begin{tabular}{|c|c|c|p{10cm}|}
 \hline \hline
 	Pin & Signal & Type & Beschreibung \\ \hline
@@ -97,7 +102,8 @@ for SWD communication)\\ \hline
 19 & 5V-Supply & Output & This pin is used to supply power to some eval boards.
 Not all JLinks supply power on this pin, only the KS (Kickstart) versions.
 Typically left open on target hardware.\\ \hline
-\end{tabular}\\\\
+\end{tabular}
+\end{table}\\\\
 
 Die anderen Leitungen des bisherigen 20-poligen Anschlussen wurden weggelassen,
 weil sie entweder f\"ur SWD uinteressant sind oder sie auf GND gelegt sind. Egal
