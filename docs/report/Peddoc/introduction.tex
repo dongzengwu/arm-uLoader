@@ -1,17 +1,27 @@
-\chapter{Einleitung}
-
-Es gibt nahezu keinen Bereich, indem ARM-MCU heutzutage keine Verwendung finden. 
-Zudem gilt ARM als f\"uhrende Architektur in vielen Marktsegementen.\\ 
-Das Projekt beinhaltet die Entwicklung eines Bootloaders sowie die
- Netzwerkimplementierung.\\
-Das verwendete stm32f4-discovery Board ist ein beliebter "'Allrounder"'.
-Die Begr\"undung daf\"ur ist das Preis-Leistungs-Verh\"altnis und die
-Benutzerfreundlichkeit. Diese erlaubt einen leichten Um- bzw. Einstieg in
-die ARM-MCU-Programmierung.\\
-Der auf dem Board verwendete ARM-Cortex-M4-Prozessor beinhaltet (Prinzip)
-Bestandteile der folgenden Grafik entsprechend.\\
+\chapter{Introduction}
+ 
+Nowadays the usage of the ARM-MCU could be used in every aspect of everyday life.
+Additionally, the ARM processor is the number one architecture of choice in 
+many market segments.\\ 
+This project is based on the development of a bootloaders and its implementation 
+inside a network.\\
+The usage stm32f4-discovery Board is a prefered and viewed as an "'Allrounder"'
+for such a project. The reasoning behind this is the "value for money" and 
+user-friendliness. This allows for an easy introduction into the world of ARM
+Microcontroller unit programming.\\
+The ARM-Cortex-M4-Prozessor found on the STM32f4-discovery board prossesses 
+the principel parts shown in the figure below.\\
 \section{The Aim}
-The aim of the project is to research on the feasibility to create a quick cheap and easy to use way of utilizing an STM32 Micro controller to communicate between a user and a remote device. The purpose of the application is meant to be a first step fundamental strategy to creating a product for future projects. It is hoped that by way of HTML communication, a fast and light application could be used to fulfill the desire of a user to achieve a particular objective such as threeway handshake signal to verify a particular device in order to transmit information such as codes or messages, using a TCP/IP protocol stake. As can be demonstrated the different applications could be endless. 
+The aim of the project is to research the feasibility to create a quick, cheap 
+and easy to use way of utilizing an STM32 Microcontroller to communicate between 
+a user and a remote device.\\
+The purpose of the application is meant to be a first step fundamental strategy to 
+creating a product for future projects.\\
+It is hoped that by way of HTML communication, a fast and light application could 
+be used to fulfill the desire of a user to achieve a particular objective such 
+as threeway handshake signal to verify a particular device in order to transmit 
+information such as codes or messages, using a TCP/IP protocol stake.\\
+As it can be demonstrated the different applications could be endless.\\ 
 
 \begin{figure}[ht]
 	\centering
@@ -23,18 +33,17 @@ The aim of the project is to research on the feasibility to create a quick cheap
 Es wird sp\"ater ein weiteres unterschiedliches Diagram verwendet. Dies ist nicht
 falsch, sondern dient der sinngem\"a"sen Darstellung des Prozessors.\\
 
+
 Zun\"achst soll ein \"Uberblick \"ueber die behandelten Themenschwerpunkte gegeben
- werden
+ werden 
 
 \section{Bootloader}
-Ein Booloader ist ein Programm, welches es erm\"oglicht ein beliebiges weiteres
- Programm nachzuladen. Wobei das nachzuladene Programm das Eigentliche ist, 
-welches ausgef\"uhrt werden soll.\\
-Dazu ist es notwendig die Hardware zu initialisieren, die ben\"otigt wird um das
- eigentliche Programm mit der gew\"ahlten Methode nachzuladen.\\
-Das stm32f407 discovery board bietet drei verschiedene Arten an um zu booten.\\
-Um zwischen den drei Varianten w\"ahlen zu k\"onnen, sind die Boot-Pins BOOT1
-und BOOT2 entsprechend zu setzen:\\\\
+The purpose of a Bootloader program is to allow the installation and utilisation 
+of any program that could be reloaded. Whereas the program that is currently loaded is also being run.\\
+Next it is necessary to initialise the hardware, that would in turn be needed to load the program.\\
+The "STM32f407 discovery board" offers three different methodes to boot up the hardware.\\
+In order to switch between the three different boot methods, the Boot-Pins BOOT1
+and BOOT2 could be set:\\\\
 \begin{tabular}{|c|c|l|l|}
 \hline \hline
   BOOT1 & BOOT2 & Boot-Mode & Adresse\\ \hline
