@@ -22,5 +22,7 @@ LWIPFILES	:= $(COREFILES) $(CORE4FILES) $(NETIFFILES)
 SOURCES		+= $(LWIPFILES)
 OBJECTS		+= $(addprefix $(OBJECTS_DIR),$(notdir $(LWIPFILES:.c=.o)))
 include_dirs	+= $(LWIP_INC_DIR) $(LWIP_INC_DIR)/ipv4
-EXP_SRC_DIRS	+= $(LWIP_SRC_DIR) $(LWIP_SRC_DIR)/ipv4 $(LWIP_SRC_DIR)/../netif
+EXP_SRC_DIRS	+= $(LWIP_SRC_DIR) $(LWIP_SRC_DIR)/core $(LWIP_SRC_DIR)/core/ipv4 \
+		   $(LWIP_SRC_DIR)/ipv4 $(LWIP_SRC_DIR)/../netif \
+		   $(LWIP_SRC_DIR)/netif
 CFLAGS		+= -Wno-unused-but-set-variable -Wno-address -Wno-unused-parameter
