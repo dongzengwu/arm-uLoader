@@ -4,7 +4,7 @@ Nowadays, an ARM-MCU could be used in every aspect of everyday life.
 Additionally, the ARM processor is the number one architecture of choice in 
 many market segments.\\\\ 
 This project is based on the development of a bootloaders and its implementation 
-inside a network.The usage stm32f4-discovery Board is a prefered and viewed as an 
+inside a network. The usage stm32f4-discovery Board is a prefered and viewed as an 
 "'Allrounder"' for such a project. The reasoning behind this is the "value for money" 
 and user-friendliness. This allows for an easy introduction into the world of ARM
 Microcontroller unit programming.\\
@@ -42,7 +42,7 @@ The "STM32f407 discovery board" offers three different methodes to boot up the h
 In order to switch between the three different boot methods, the Boot-Pins BOOT1
 and BOOT2 could be set:
 \begin{table}[ht]
-\caption{Boot-Pin Function}
+\centering
 \begin{tabular}{|c|c|l|l|}
 \hline \hline
   BOOT1 & BOOT2 & Boot-Mode & Adresse\\ \hline
@@ -53,6 +53,7 @@ and BOOT2 could be set:
  1  & 1 & SRAM & 0x2000\_0000\\
 \hline
 \end{tabular}
+\caption{Boot-Pin Function}
 \end{table}\\\\
 
 The ROM memory is included by the manufacturer along with the bootloader.\\
@@ -72,12 +73,12 @@ After these steps, the newly setup program is then responsible for the initializ
 of the hardware.\\
 
 \section{SWD}
-During the development of the Boot Loader, a the serial wire debug technology was used. 
+During the development of the Boot Loader, a serial wire debug technology was used. 
 The reason behind this is to utilize a Debug-Port that has been specially developed to 
 cater to a MCU that makes allows the use of the least amount of pins possible.\\
-This port consists of pins shown in the following:\\\\
-\begin{table}
-\caption{SWD PINOUT}
+This port consists of pins shown in the following:\\
+\begin{table}[ht]
+\centering
 \begin{tabular}{|c|c|c|p{10cm}|}
 \hline \hline
 	Pin & Signal & Type & Description \\ \hline
@@ -98,7 +99,8 @@ for SWD communication)\\ \hline
 Not all JLinks supply power on this pin, only the KS (Kickstart) versions.
 Typically left open on target hardware.\\ \hline
 \end{tabular}
-\end{table}\\\\
+\caption{SWD PINOUT}
+\end{table}\\
 
 The other pins of the 20-pole connection are going to left out, meaning, the other 
 pins are useless for the SWD or they will be used as a GND. Regardless of the pin allocation, 
@@ -107,7 +109,8 @@ it is important that the communication of the SWD would not be interrupted or ef
 This technique represents a new and more effective way to debuggen. Until now JTAG 
 represented the Debugger-Interface.  
 
-Die Vorteile dieser Technologie sind (frei von der ARM-Website \"ubersetzt):
+
+The advantages of this technology are:
 
 \begin{itemize}
 \item Only 2 Pins are used
@@ -120,7 +123,7 @@ access capability to the Register or Memory
 \item Protection against errors that cause disconnection
 \end{itemize}  
 
-\section{startup}
+\section{Startup}
  - stack, program counter, interrupt, vector table, initial system clock
 
 \section{CMSIS}
@@ -144,7 +147,7 @@ and peripheral devices, as well as Real-time OS (RTOS) and Middleware.
 \section{Nested Vectored Interrupt Controller}
 The NVIC offers the possibility to configure special interrupts 
 (Priority, Activate, Deactivate...). \\
-Aside from the given Interrupts, there are also the configurable implementation dependent interrupts.  
+Aside from the given interrupts, there are also the configurable implementation dependent interrupts.  
 Because, the first 15 interrupts are allocated, the number of implimented interrupts could be from 0-240.
 
 \section{Differences }
