@@ -1,8 +1,8 @@
 \chapter{Introduction}
  
-Nowadays the usage of the ARM-MCU could be used in every aspect of everyday life.
+Nowadays, an ARM-MCU could be used in every aspect of everyday life.
 Additionally, the ARM processor is the number one architecture of choice in 
-many market segments.\\ 
+many market segments.\\\\ 
 This project is based on the development of a bootloaders and its implementation 
 inside a network.The usage stm32f4-discovery Board is a prefered and viewed as an 
 "'Allrounder"' for such a project. The reasoning behind this is the "value for money" 
@@ -12,7 +12,7 @@ The ARM-Cortex-M4-Prozessor found on the STM32f4-discovery board processes
 the principel parts shown in the figure below.\\
 The aim of the project is to research the feasibility to create a quick, cheap 
 and easy to use way of utilizing an STM32 Microcontroller to communicate between 
-a user and a remote device.\\
+a user and a remote device.\\\\
 The purpose of the application is meant to be a first step fundamental strategy to 
 creating a product for future projects.\\
 It is hoped that by utilizing a boot loader, a fast and light application could 
@@ -40,8 +40,8 @@ of any program that could be reloaded. Whereas the program that is currently loa
 Next it is necessary to initialise the hardware, that would in turn be needed to load the program.\\
 The "STM32f407 discovery board" offers three different methodes to boot up the hardware.\\
 In order to switch between the three different boot methods, the Boot-Pins BOOT1
-and BOOT2 could be set:\\\\
-\begin{table}
+and BOOT2 could be set:
+\begin{table}[ht]
 \caption{Boot-Pin Function}
 \begin{tabular}{|c|c|l|l|}
 \hline \hline
@@ -72,11 +72,10 @@ After these steps, the newly setup program is then responsible for the initializ
 of the hardware.\\
 
 \section{SWD}
-Bei der Entwicklung kam die Serial Wire Debug Technologie zum Einsatz. Hierbei 
-handelt es sich um einen Debug-Port, der speziell daf\"ur entwickelt wurde
- um MCU bzw. Projekte mit MCU, bei denen so wenig wie m\"oglich Pins verwendet
- werden sollen. \\
-Dieser Port besteht aus den Leitungen folgender Tabelle:\\\\
+During the development of the Boot Loader, a the serial wire debug technology was used. 
+The reason behind this is to utilize a Debug-Port that has been specially developed to 
+cater to a MCU that makes allows the use of the least amount of pins possible.\\
+This port consists of pins shown in the following:\\\\
 \begin{table}
 \caption{SWD PINOUT}
 \begin{tabular}{|c|c|c|p{10cm}|}
@@ -101,55 +100,55 @@ Typically left open on target hardware.\\ \hline
 \end{tabular}
 \end{table}\\\\
 
-Die anderen Leitungen des bisherigen 20-poligen Anschlussen wurden weggelassen,
-weil sie entweder f\"ur SWD uinteressant sind oder sie auf GND gelegt sind. Egal
-was davon zutrifft, sie haben keinen Einfluss auf die SWD-Kommunikation.
+The other pins of the 20-pole connection are going to left out, meaning, the other 
+pins are useless for the SWD or they will be used as a GND. Regardless of the pin allocation, 
+it is important that the communication of the SWD would not be interrupted or effected. 
 
-Es ist eine neue, sehr interessante Weise zu debuggen. Bisher war JTAG das
-Debugger-Interface. 
+This technique represents a new and more effective way to debuggen. Until now JTAG 
+represented the Debugger-Interface.  
+
 Die Vorteile dieser Technologie sind (frei von der ARM-Website \"ubersetzt):
 
 \begin{itemize}
-\item Nur 2 Pins werden belegt
-\item JTAG TAP controller kompatibel
-\item Erlaubt dem Debugger ein weiterer AMBA-Bus-Master zu werden um auf
-Register / Speicher zuzugreifen.
+\item Only 2 Pins are used
+\item JTAG TAP controller compatible
+\item Allows the Debugger to become an extra AMBA-Bus-Master, in order to accomidate an extra 
+access capability to the Register or Memory
 \item High Datarates - 4Mbytes/sec @50MHz
-\item Low Power - keine zus\"atzlichen Versorgungsspannung
-\item gute "'built in"' Fehler-Erkennung
-\item Schutz vor Fehlern bei Kontaktverlust
+\item Low Power - no extra power supply 
+\item Error recognition "'built in"' that performs well
+\item Protection against errors that cause disconnection
 \end{itemize}  
 
 \section{startup}
  - stack, program counter, interrupt, vector table, initial system clock
 
 \section{CMSIS}
-Der ARM Cortex Microcontroller Software Interface Standard ist eine 
-H\"andlerunabh\"angige Abstraktionsschicht f\"ur die Cortex-M Prozessoren.\\
-Dabei ist CMSIS unterteilt in:
+The ARM Cortex Microcontroller Software Interface Standard is a manufacturer independent 
+abstraction layer for the Cortex-M processors.\\
+Thereby the CMSIS is subdivided into:
 \begin{itemize}
-\item CMSIS-CORE - API zum Zugriff auf den Prozessorkern sowie Perepherie-Register.
-\item CMSIS-Driver - Generischer Zugriff auf Perepherie f\"ur die Middleware
+\item CMSIS-CORE - API access to the processor kernal and peripheral register.
+\item CMSIS-Driver - Generic access on peripheral devices for Middleware
 			(reusability).
-\item CMSIS-DSP - DSP Bibliothek mit \"uber 60 Funktionen
-\item CMSIS-RTOS API - Standardisiertes (RTOS kompatibel)
-\item CMSIS-Pack - Beschreibung der wichtigen Bestandteile (Nutzersicht)
-\item CMSIS-SVD - Beschreibung der wichtigen Bestandteile (Systemsicht)
+\item CMSIS-DSP - DSP Liberary with over 60 functions
+\item CMSIS-RTOS API - Standardised (RTOS compatible)
+\item CMSIS-Pack - Description of the most important components (User view)
+\item CMSIS-SVD - Description of the most important components (System view)
 \item CMSIS-DAP - Debug Access Port
 \end{itemize}
 
-Zusammengefasst erlaubt CMSIS einheitliche und simple Software Schnittstelle
-zu Prozessor und die Perepherie, sowie Echtzeit OS (RTOS) und Middleware.
+Summarized, CMSIS allows a consistent and simple software interfaced to the processor 
+and peripheral devices, as well as Real-time OS (RTOS) and Middleware.
 
 \section{Nested Vectored Interrupt Controller}
-Der NVIC bietet die M\"oglichkeit gewisse Interrupts zu konfigurieren
-(Priorit\"at, aktiviert, deaktiviert...). \\
-Neben vorgegebenen Interrupts sind hier auch die Implementierungsabh\"angigen
-Interrupts konfigurierbar. Da die ersten 15 Interrupts vorgegeben sind, k\"onnen
-die implementierten Interrupts in der Anzahl von 0 bis 240 reichen.
+The NVIC offers the possibility to configure special interrupts 
+(Priority, Activate, Deactivate...). \\
+Aside from the given Interrupts, there are also the configurable implementation dependent interrupts.  
+Because, the first 15 interrupts are allocated, the number of implimented interrupts could be from 0-240.
 
-\section{Unterschiede}
+\section{Differences }
 GNU, KEIL iar
 
-\section{Netzwerk}
+\section{Network}
 was sollte zum besseren verstehen hier einen platz finden.
