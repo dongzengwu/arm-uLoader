@@ -1,0 +1,37 @@
+\chapter{Bootloader}
+At first the bootloader is an unsolvable mystery but, how all unknown, after a
+certain period of time keeping yourself busy with that subject, it loses all the
+mystic glare and you recognize how easy it is.\\
+
+\section{Preperation}
+To enable a program to be written into the flash memory while the MCU is in
+progress you have to do the things like setting up the peripherals needed for 
+the process (descriped above).\\
+After that is done the the necessary space, at the right place, has to be
+allocated.
+
+\begin{lstlisting}
+void (*jumptoprogram)(void) = (void (*)(void))0x08008000;
+\end{lstlisting}
+The Adress depands on the size of the Bootloader program, to make sure it won't
+be overwritten.\\
+Now the program has to be written to the adress of the function pointer.
+\begin{lstlisting}
+unsigned int volatile * const program = (unsigned int *) 0x08008000;
+\end{lstlisting}
+Through the variable "program" it is possible to write to and read from
+the specific adress.
+\begin{lstlisting}
+*program = "'USART-Input"' /*write*/
+\end{lstlisting}
+Theoretically it is also possible to read from that adress but that is not
+used.
+\section{Calling the Function}
+At any point of the bootloader program it now can be jumped to the adress
+ by simply calling the function pointer.
+\begin{lstlisting}
+jumptoprogram();
+\end{lstlisting}
+
+From that point the bootloader is left behind and the "'real"' program is 
+executing.
