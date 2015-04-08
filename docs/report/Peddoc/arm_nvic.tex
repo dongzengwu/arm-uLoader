@@ -1,0 +1,42 @@
+\chapter{NVIC in use}
+As already said, the NVIC is used to configure the interrupts. Since
+there is a bi directional communication via USART6 the NVIC has to be
+configured to fit that demand.\\
+Therefore the first thing to do is, to enable the clock on APB2 to clock
+the USART6. Additonally configuration has to be done for the USARTX,
+ but is not part of the NVIC configuration.\\
+The clock is mentioned because it is an essential part to do that, neither 
+U(S)ART[1..6] or whatever is used. Of course the the right APBX has to be
+configured (precise diagram of stm32f4).\\
+The configuration is done by writing the parameters into a structure and
+bind and than load that struction into the NVIC.
+The last thing to do is to enable USART globally.
+
+\begin{lstlisting}%[ht]
+
+/* We are initialized */
+u->Initialized = 1;
+
+/* Disable if not already */
+USARTx->CR1 &= ~USART_CR1_UE;
+
+/* Init */
+USART_Init(USARTx, &USART_InitStruct);
+
+/* Enable RX interrupt */
+USARTx->CR1 |= USART_CR1_RXNEIE;
+
+/* Fill NVIC settings */
+NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
+NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = TM_USART_NVIC_PRIORITY;
+NVIC_InitStruct.NVIC_IRQChannelSubPriority = TM_USART_INT_GetSubPriority(USARTx);
+NVIC_Init(&NVIC_InitStruct);
+
+/* Enable USART peripheral */
+USARTx->CR1 |= USART_CR1_UE;
+\end{lstlisting}
+
+As it is shown in the code the configurationprocess is done like described above.
+
+The code is part of a function therefor USARTx is a parameter, in this case it
+is USART6.

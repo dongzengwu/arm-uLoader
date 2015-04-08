@@ -23,6 +23,11 @@
 	numbers=endperiod
 ]{scrreprt}
 
+\usepackage{float}
+\floatstyle{ruled}
+\newfloat{program}{ht}{lop}%[chapter]
+\floatname{program}{Code} 
+
 \usepackage{scrhack}
 \usepackage{yfonts}
 % Zum Umfließen von Bildern -------------------------------------------------
@@ -165,7 +170,8 @@ hypertexnames=false,% zur korrekten Erstellung der Bookmarks
 \clearpage
 \pagenumbering{arabic}
 \include{introduction}
-%\include{overview}
+\include{arm_aufbau}
+\include{arm_nvic}
 \bibliography{Bibliographie}			% Aufruf: bibtex FHWTVorlage
 \bibliographystyle{natdin}			% DIN-Stil des Literaturverzeichnisses
 % Anhang -------------------------------------------------------------------
