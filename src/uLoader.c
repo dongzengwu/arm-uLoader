@@ -120,13 +120,15 @@ int main(void)
 	printf("\r%s> ", PROG_NAME);
 	for (;;) {
 		/* check if any packet received */
-		/* if (ETH_CheckFrameReceived()) { */
-		/* 	#<{(| process received ethernet packet |)}># */
-		/* 	LwIP_Pkt_Handle(); */
-		/* } */
+		if (ETH_CheckFrameReceived()) {
+			/* process received ethernet packet */
+			LwIP_Pkt_Handle();
+		}
 
 		/* handle periodic timers for LwIP */
-		/* LwIP_Periodic_Handle(LocalTime); */
+		LwIP_Periodic_Handle(LocalTime);
+		/* sys_check_timeouts(); */
+
 		/* TM_USART_Puts(USART6, "Hallo Welt\r\n"); */
 		if (TM_USART_Gets(USART6, buffer, 64) != 0) {
 			parser(buffer, sizeof(buffer));
@@ -137,15 +139,6 @@ int main(void)
 		/* printf("chars read: %i\n", ret); */
 		/* buffer[0] = TM_USART_Getc(USART6); */
 		/* printf("zeichen: %c\n", buffer[0]); */
-
-		/* check if any packet received */
-		if (ETH_CheckFrameReceived()) {
-			/* process received ethernet packet */
-			LwIP_Pkt_Handle();
-		}
-
-		/* handle periodic timers for LwIP */
-		LwIP_Periodic_Handle(LocalTime);
 
 		ms_delay(500);
 		/* GPIOD->ODR ^= (1 << 13);           // Toggle the pin */
