@@ -17,6 +17,7 @@
 
 static inline int parser(const char *command, const size_t maxbuf);
 static inline int cmd_echo(const char *command, const size_t maxbuf);
+static inline int cmd_read(const char *command, const size_t maxbuf);
 static inline int printenv(const char **env);
 
 extern char **environ;
@@ -140,7 +141,7 @@ int main(void)
 		/* buffer[0] = TM_USART_Getc(USART6); */
 		/* printf("zeichen: %c\n", buffer[0]); */
 
-		ms_delay(500);
+		ms_delay(0);
 		/* GPIOD->ODR ^= (1 << 13);           // Toggle the pin */
 	}
 
@@ -151,12 +152,16 @@ int main(void)
 
 static inline int parser(const char *command, const size_t maxbuf)
 {
-	if (strncmp(command, "echo ", 5) == 0)
+	if (memcmp(command, "\n", 1) == 0)
+		printf("\n");
+	else if (strncmp(command, "echo ", 5) == 0)
 		cmd_echo(command, maxbuf);
 	else if (strncmp(command, "printenv", 8) == 0)
 		printenv((const char **) environ);
 	else if (strncmp(command, "env", 3) == 0)
 		printenv((const char **) environ);
+	else if (strncmp(command, "read", 4) == 0)
+		cmd_read(command, maxbuf);
 	else
 		printf("unknown command: %.*s\n",
 			maxbuf, command);
@@ -174,6 +179,31 @@ static inline int cmd_echo(const char *command, const size_t maxbuf)
 		printf("%.5s%s\n", command, "$" ENV_SYSCORECLK);
 		printf("%s\n", command + 5);
 	}
+
+	return 0;
+}
+
+static inline int cmd_read(const char *command, const size_t maxbuf)
+{
+	unsigned short volatile * flash = (unsigned short *) FLASH_BASE;
+	int i = 0;
+
+	int command_size = strlen(command);
+	int num_bytes = command_size <= 5 ? 16 : atoi(&command[5]);
+
+	while (i < num_bytes) {
+		if (i % 8 == 0)
+			printf("%06x ", i * 2);
+
+		printf("%04x ", *(flash++));
+		i++;
+
+		if (i % 8 == 0)
+			printf("\n");
+	}
+
+	if (i % 8 != 0)
+		printf("\n");
 
 	return 0;
 }
