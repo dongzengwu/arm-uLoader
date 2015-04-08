@@ -4,22 +4,20 @@ Nowadays the usage of the ARM-MCU could be used in every aspect of everyday life
 Additionally, the ARM processor is the number one architecture of choice in 
 many market segments.\\ 
 This project is based on the development of a bootloaders and its implementation 
-inside a network.\\
-The usage stm32f4-discovery Board is a prefered and viewed as an "'Allrounder"'
-for such a project. The reasoning behind this is the "value for money" and 
-user-friendliness. This allows for an easy introduction into the world of ARM
+inside a network.The usage stm32f4-discovery Board is a prefered and viewed as an 
+"'Allrounder"' for such a project. The reasoning behind this is the "value for money" 
+and user-friendliness. This allows for an easy introduction into the world of ARM
 Microcontroller unit programming.\\
-The ARM-Cortex-M4-Prozessor found on the STM32f4-discovery board prossesses 
+The ARM-Cortex-M4-Prozessor found on the STM32f4-discovery board processes 
 the principel parts shown in the figure below.\\
-\section{The Aim}
 The aim of the project is to research the feasibility to create a quick, cheap 
 and easy to use way of utilizing an STM32 Microcontroller to communicate between 
 a user and a remote device.\\
 The purpose of the application is meant to be a first step fundamental strategy to 
 creating a product for future projects.\\
-It is hoped that by way of HTML communication, a fast and light application could 
+It is hoped that by utilizing a boot loader, a fast and light application could 
 be used to fulfill the desire of a user to achieve a particular objective such 
-as threeway handshake signal to verify a particular device in order to transmit 
+as, threeway handshake signal to verify a particular device in order to transmit 
 information such as codes or messages, using a TCP/IP protocol stake.\\
 As it can be demonstrated the different applications could be endless.\\ 
 
@@ -30,12 +28,11 @@ As it can be demonstrated the different applications could be endless.\\
 	\label{m4_prinzip}
 \end{figure}
 
-Es wird sp\"ater ein weiteres unterschiedliches Diagram verwendet. Dies ist nicht
-falsch, sondern dient der sinngem\"a"sen Darstellung des Prozessors.\\
+Analogously, a new and different diagram would be used, in order to illustrate the 
+change in the usage-concept of the processors.\\
 
+But first, an overview of the discussed focal points would be outlined.\\  
 
-Zun\"achst soll ein \"Uberblick \"ueber die behandelten Themenschwerpunkte gegeben
- werden 
 
 \section{Bootloader}
 The purpose of a Bootloader program is to allow the installation and utilisation 
@@ -57,23 +54,22 @@ and BOOT2 could be set:\\\\
 \hline
 \end{tabular}
 \end{table}\\\\
-Der ROM, hier System Memory, beinhaltet den, vom Hersteller, mitgegebenen
- Bootloader.\\
-Wie man den Speicher dann belegt ist einem freigestellt. Man muss dann darauf
-achten, dass man an die richtige Adresse springt, wenn man das Programm nachgeladen
-hat.\\
-Als Beispiel-Vorgehensweise kann man sagen, dass die Reihenfolge, nachdem der
-Bootloader bereits geladen ist, folgende ist:\\
+
+The ROM memory is included by the manufacturer along with the bootloader.\\
+It is very important to set the correct address of the program, that is located 
+in the memory, in order for the reloading of the program to work.\\
+A step by step example of the the sequence after the boot loader is already 
+loaded , is as follows:
 
 \begin{enumerate}
-\item Verwendete Hardware initialisieren (USB/USART/RCC...)
-\item Auf eingehendes Programm warten (wenn sonst keine Aufgabe ansteht)
-\item Eingehendes Programm an Adresse XY schreiben.
-\item An Adresse XY springen
+\item Hardware initialize (USB / USART / RCC ... )
+\item Wait for running program (pending other tasks)
+\item Write a program to address XY.
+\item Point to address XY
 \end{enumerate}
 
-Das eingegangene Programm ist dann nat\"urlich selbst f\"ur die Initialisierung
-der verwendeten Hardware zust\"andig.\\
+After these steps, the newly setup program is then responsible for the initialization 
+of the hardware.\\
 
 \section{SWD}
 Bei der Entwicklung kam die Serial Wire Debug Technologie zum Einsatz. Hierbei 
@@ -85,7 +81,7 @@ Dieser Port besteht aus den Leitungen folgender Tabelle:\\\\
 \caption{SWD PINOUT}
 \begin{tabular}{|c|c|c|p{10cm}|}
 \hline \hline
-	Pin & Signal & Type & Beschreibung \\ \hline
+	Pin & Signal & Type & Description \\ \hline
 1 & VTref & Input & This is the target reference voltage. It is used to
  check if the target has power, to create the logic-level reference for
  the input comparators and to control the output logic levels to the target.
