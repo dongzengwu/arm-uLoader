@@ -37,5 +37,5 @@ endif
 	pdflatex $(target)
 
 clean:
-	-rm -rf tmp.tmp *.tpt $(html)/* $(target).ps $(target).dvi $(target).pdf *.bbl *.lol *.lof *.lpr *.blg *.ist *.bst *.cfg *.nls *.nlo *.lot *.aux Inhalt/*.aux *.toc *.idx *.ind *.ilg *.log *.out *.brf *.cb *~ thumb* *.rtf *.backup Inhalt/*.backup Bilder/*.log Inhalt/*.log ./*.gls
+	-rm -rf tmp.tmp *.tpt $(html)/* $(target).ps $(target).dvi $(target).pdf *.bbl *.lol *.lof *.lpr *.blg *.ist *.bst *.cfg *.nls *.nlo *.lot *.aux Inhalt/*.aux *.toc *.idx *.ind *.ilg *.log *.out *.brf *.cb *~ thumb* *.rtf *.backup Inhalt/*.backup Bilder/*.log Inhalt/*.log ./*.gls ./*.glg ./*.glo ./*.glsdefs ./*.acn
 

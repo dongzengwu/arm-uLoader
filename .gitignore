@@ -55,6 +55,7 @@
 *.glg
 *.glo
 *.gls
+*.glsdefs
 
 # vim
 [._]*.s[a-w][a-z]
