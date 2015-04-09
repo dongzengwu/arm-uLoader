@@ -199,18 +199,29 @@ static inline int cmd_read(const char *command, const size_t maxbuf)
 		printf("%02x ", *flash++);
 		i++;
 
-		if (i % 8 == 0)
+		if (i % 16 == 8)
 			putchar(' ');
 
-		if ((i % 16 || i >= num_bytes) && (*flash >= 0x20 && *flash <= 0x7e)) {
-		}
+		if (i % 16 == 0 || i >= num_bytes) {
+			volatile unsigned char *oldflash = flash;
 
-		if (i % 16 == 0)
-			printf("\n");
+			flash-= i % 16 == 0 ? 16 : i % 16;
+			printf("%*c|", i % 16 == 0 ? 0 : (16 - i % 16) * 3 + 2, ' ');
+
+			while (flash != oldflash) {
+				if (*flash >= 0x20 && *flash <= 0x7e)
+					putchar(*flash);
+				else
+					putchar('.');
+
+				flash++;
+			}
+
+			printf("|\n");
+		}
 	}
 
-	if (i % 16 != 0)
-		printf("\n%07x\n", i);
+	printf("%07x\n", i);
 
 	return 0;
 }
