@@ -153,7 +153,7 @@ int main(void)
 static inline int parser(const char *command, const size_t maxbuf)
 {
 	if (memcmp(command, "\n", 1) == 0)
-		printf("\n");
+		goto done;
 	else if (strncmp(command, "echo ", 5) == 0)
 		cmd_echo(command, maxbuf);
 	else if (strncmp(command, "printenv", 8) == 0)
@@ -166,6 +166,7 @@ static inline int parser(const char *command, const size_t maxbuf)
 		printf("unknown command: %.*s\n",
 			maxbuf, command);
 
+done:
 	return 0;
 }
 
@@ -176,7 +177,7 @@ static inline int cmd_echo(const char *command, const size_t maxbuf)
 		printf("SYSCORECLK: %u\n",
 			(unsigned int) SystemCoreClock);
 	} else {
-		printf("%.5s%s\n", command, "$" ENV_SYSCORECLK);
+		/* printf("%.5s%s\n", command, "$" ENV_SYSCORECLK); */
 		printf("%s\n", command + 5);
 	}
 
@@ -185,25 +186,31 @@ static inline int cmd_echo(const char *command, const size_t maxbuf)
 
 static inline int cmd_read(const char *command, const size_t maxbuf)
 {
-	unsigned short volatile * flash = (unsigned short *) FLASH_BASE;
+	unsigned char volatile * flash = (unsigned char *) FLASH_BASE;
 	int i = 0;
 
 	int command_size = strlen(command);
 	int num_bytes = command_size <= 5 ? 16 : atoi(&command[5]);
 
 	while (i < num_bytes) {
-		if (i % 8 == 0)
-			printf("%06x ", i * 2);
+		if (i % 16 == 0)
+			printf("%07x  ", i);
 
-		printf("%04x ", *(flash++));
+		printf("%02x ", *flash++);
 		i++;
 
 		if (i % 8 == 0)
+			putchar(' ');
+
+		if ((i % 16 || i >= num_bytes) && (*flash >= 0x20 && *flash <= 0x7e)) {
+		}
+
+		if (i % 16 == 0)
 			printf("\n");
 	}
 
-	if (i % 8 != 0)
-		printf("\n");
+	if (i % 16 != 0)
+		printf("\n%07x\n", i);
 
 	return 0;
 }

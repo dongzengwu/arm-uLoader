@@ -338,3 +338,6 @@ clean:
 # Flash the STM32F4
 flash: $(EXECUTABLES)
 	@$(STLINK)/st-flash write $(OUTPUT_DIR)$(PROG_NAME_NQ).bin 0x8000000
+
+size:
+	arm-none-eabi-size $(OUTPUT_DIR)/$(PROG_NAME_NQ).hex
