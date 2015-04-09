@@ -1,5 +1,6 @@
 #include "stm32f4xx.h"
 #include "tm_stm32f4_usart.h"
+#include "tftp.h"
 /* #define __TEST__ */
 #ifdef __TEST__
 #include "stm32f4x7_eth.h"
@@ -9,6 +10,7 @@
 #endif
 
 #define ENV_SYSCORECLK		"SYSCORECLK"
+#define ENV_FILE_SIZE		"FILE_SIZE"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -162,6 +164,8 @@ static inline int parser(const char *command, const size_t maxbuf)
 		printenv((const char **) environ);
 	else if (strncmp(command, "read", 4) == 0)
 		cmd_read(command, maxbuf);
+	else if (strncmp(command, "tftp", 4) == 0)
+		tftp("blinky.bin");
 	else
 		printf("unknown command: %.*s\n",
 			maxbuf, command);
@@ -206,7 +210,8 @@ static inline int cmd_read(const char *command, const size_t maxbuf)
 			volatile unsigned char *oldflash = flash;
 
 			flash-= i % 16 == 0 ? 16 : i % 16;
-			printf("%*c|", i % 16 == 0 ? 0 : (16 - i % 16) * 3 + 2, ' ');
+			printf("%*c|",
+				i % 16 == 0 ? 0 : (16 - i % 16) * 3 + 2, ' ');
 
 			while (flash != oldflash) {
 				if (*flash >= 0x20 && *flash <= 0x7e)
@@ -236,6 +241,8 @@ static inline int printenv(const char **env)
 		ENV_SYSCORECLK, (unsigned int) SystemCoreClock);
 	printf("%s=%u\n",
 		"HSE_VALUE", (unsigned int) HSE_VALUE);
+	printf("%s=%u\n",
+		ENV_FILE_SIZE, (unsigned int) file_size);
 
 	while (env[i])
 		printf("%s\n", env[i++]);
