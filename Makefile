@@ -72,6 +72,10 @@ ifdef CONFIG_MISC
 	C_SOURCES	+= $(ARCH_SRC_DIR)/misc.c
 endif
 
+ifdef CONFIG_TFTP
+	C_SOURCES	+= $(SOURCE_DIR)/tftp.c
+endif
+
 ifdef CONFIG_ADC
 	C_SOURCES	+= $(ARCH_SRC_DIR)/stm32f4xx_adc.c \
 			   $(ARCH_SRC_DIR)/stm32f4xx_rcc.c
