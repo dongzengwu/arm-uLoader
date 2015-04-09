@@ -152,8 +152,18 @@ The NVIC offers the possibility to configure special interrupts
 Aside from the given interrupts, there are also the configurable implementation dependent interrupts.  
 Because, the first 15 interrupts are allocated, the number of implimented interrupts could be from 0-240.
 
-\section{Differences }
-GNU, KEIL iar
+\section{Differences in Development}
+The whole project was developed with vim, make and gcc.
+ The advantage of that is, that it is not necessary to learn how to use an IDE.
+ There are a lot of IDE's which offer programming ARM. Theorically one could 
+learn to work with a new IDE every project. Vim on the other hand is everytime 
+the same, gcc and make also. The only thing one has to do is to write the 
+ makefile which can be very time consuming.\\
+The disadvantage is the missing luxury. Nearly every IDE offers things like an
+address editor or a nice graphical way to debug. And to be fair, it is not that
+hard to learn how to use an IDE.
 
 \section{Network}
-was sollte zum besseren verstehen hier einen platz finden.
+The stm32f407 discovery board itself has no possibility for any network connection.
+Thus the BaseBoard (BB) is needed (and used). The BB adds new drivers like network
+or rs232.
