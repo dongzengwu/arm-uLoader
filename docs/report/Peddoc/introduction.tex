@@ -1,7 +1,6 @@
 \chapter{Introduction}
 
-\gls{can}
-\acrfull{lvm}
+\glsaddall
 Nowadays, an ARM-MCU could be used in every aspect of everyday life.
 Additionally, the ARM processor is the number one architecture of choice in 
 many market segments.\\\\ 
@@ -26,7 +25,7 @@ As it can be demonstrated the different applications could be endless.\\
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=400px, height=300px]{../img/Cortex-M4-chip-diagram-LG.png}
-	\caption{Prinzipieller Aufbau}
+	\caption{Standard Layout of ARM Cortex-M4 MCU}
 	\label{m4_prinzip}
 \end{figure}
 
@@ -124,9 +123,6 @@ access capability to the Register or Memory
 \item Error recognition "'built in"' that performs well
 \item Protection against errors that cause disconnection
 \end{itemize}  
-
-\section{Startup}
- - stack, program counter, interrupt, vector table, initial system clock
 
 \section{CMSIS}
 The ARM Cortex Microcontroller Software Interface Standard is a manufacturer independent 

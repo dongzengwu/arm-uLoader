@@ -4,109 +4,36 @@
  is an internal bus for System-on-Chips (SoC) to connect low power peripheral
  devices. The APB bus is part of the AMBA-achitecture which is designed for low
 power and simple interface. It can be used with the standardized buses like AHB.}}
-\newglossaryentry{usability}{name=Usability, description={Beschreibt ein Maß wie leicht ein Programm, ohne die Anleitung zu lesen, bedienbar ist. Mehrere ISO beschäftigen sich hiermit unteranderem ISO 9241-11}}
-\newglossaryentry{unix}{name=UNIX, description={Steht heute im wesentlich für das Konzept eines Betriebssystems, was 1969 Entwickelt wurde bzw. die ihren Ursprung davon haben.}}
-\newglossaryentry{linux}{name=Linux, description={Meist sind damit Betriebssysteme gemeint die Unix ähnlich sind, dabei aber den von Linus Torvalds gepflegten Kernel benutzen samt GNU Sfotware.}}
-\newglossaryentry{c}{name=C, description={TODO}}
-\newglossaryentry{html}{name=HTML, description={TODO}}
-\newglossaryentry{javascript}{name=Javascript, description={TODO}}
-\newglossaryentry{ajax}{name=AJAX, description={TODO}}
-\newglossaryentry{tcp}{name=TCP, description={TODO}}
-\newglossaryentry{ip}{name=IP, description={TODO}}
-\newglossaryentry{bug}{name=Bug, description={TODO}}
-\newglossaryentry{shield}{name=shield, description={Kupferblech welches das betroffene Gerät von außen abschirmt}}
-\newglossaryentry{emi}{name=EMI, description={\textit{Electromagnetic interference} sind Störungen, die zumeist durch Induktion oder Strahlung verursacht werden. Sie wirkt sich auf den Empfang, oder andere, oft ungeschirmte Elektronik, aus}}
-\newglossaryentry{repositorie}{name=Repositorie, description={Ein Verzeichnis bzw. Lager für digitale Inhalte. Hier ist speziell ein Software-Repository gemeint. Das zusätzlich zu den eigentlichen Programmen noch Informationen wie Abhängigkeiten etc. zu Verfügung stellt}}
-\newglossaryentry{toolchain}{name=Toolchain, description={Sammlung von Software, die zur Erstellung von Programmen genutzt werden. Enthält unter anderem, Compiler, Linker und Bibliotheken}}
-\newglossaryentry{kompiler}{name=Kompiler, description={Hierbei handelt es sich um einen speziellen Übersetzer. Der eine Hochsprache in eine Form übersetzt, die von der Ziel-Prozessorarchitektur interpretiert werden kann}}
-\newglossaryentry{crossCompiling}{name=Cross Compiling, description={Das Verfahren, ein Programm für eine andere Rechnerarchitektur zu kompilieren, als das System auf dem kompiliert wird}}
-\newglossaryentry{rechnerarchitektur}{name=Rechnerarchitektur, description={TODO}}
-\newglossaryentry{git}{name=Git, description={Sehr schnelle Versionsverwaltung. Wird für Quellcode-Verwaltung des Linux Kernels verwendet.}}
-\newglossaryentry{opkg}{name=opkg, description={Paketverwaltung für eingebettete Linux. Programmiert in C. Ähnlich dem dpkg oder apt. Wird im Gegensatz zu ipkg gepflegt}}
-\newglossaryentry{derivat}{name=Derivat, description={TODO}}
-\newglossaryentry{rs232}{name=RS232, description={TODO}}
-\newglossaryentry{gui}{name=GUI, description={Ein \textit{Graphical User Interface} ist eine Software-Komponente, die es dem Benutzer ermöglicht ein System mittels grafischer Symbole zu steuern}}
-\newglossaryentry{luci}{name=LUCI, description={Modulare WebUI für OpenWrt. Das in 17 Sprachen erhältlich ist. In LUA geschrieben. Speziell auf Linux Neulinge ausgerichtet, die eine GUI gewohnt sind}}
-\newglossaryentry{ssh}{name=SSH, description={Bei einer \textit{Secure Shell} handelt es sich sowohl um ein Netzwerkprotokoll, als auch um diverse Programme, die zum herstellen einer sicheren Verbindung unter netzwerkfähigen Geräten verwendet wird}}
-\newglossaryentry{scp}{name=SCP, description={\textit{Secure Copy} ist ein Programm zur sicheren, verschlüsselten Datenübertragung zwischen Rechnern}}
-\newglossaryentry{ram}{name=RAM, description={TODO}}
-\newglossaryentry{ipc}{name=IPC, description={TODO}}
-\newglossaryentry{daemon}{name=Daemon, description={Programm das im Hintergrund abläuft und bestimmte Dienste zu Verfügung stellt. Kommunikation erfolgt oft mittels Pipes und Sockets}}
-\newglossaryentry{littleEndian}{name=Little Endian, description={TODO}}
-\newglossaryentry{cgi}{name=CGI, description={Common Gateway Interface ist dafür verantwortlich das der Webserver und dritte Programme mit einander Kommunizieren können.}}
-\newglossaryentry{ramdisk}{name=CAN, description={TODO}}
-\newglossaryentry{spaghetticode}{name=Spaghetticode, description={TODO}}
-\newglossaryentry{md5}{name=md5, description={TODO}}
-\newglossaryentry{namedPipe}{name=Named Pipe, description={TODO}}
-\newglossaryentry{pipe}{name=Pipe, description={TODO}}
-\newglossaryentry{messageQueue}{name=Message Queue, description={TODO}}
-\newglossaryentry{blockingIO}{name=Blocking IO, description={Bei Ein- und Ausgabe-Befehlen wird hierbei gewartet bis Daten vorliegen. Solange dies nicht der Fall ist wird der Prozess schlafen gelegt, damit er kaum Ressourcen belegt.}}
-\newglossaryentry{sleep}{name=sleep, description={Die Funktion sleep() Zeigt dem Prozessverwaltungsprogramm an, dass es seine Rechenzeit für einen gewissen Zeitraum nicht benötigt.}}
-\newglossaryentry{printfDebugging}{name=printf debugging, description={Die Methode printf() zu benutzen um zu erfahren, wo sich der Programmdurchlauf im Moment befindet und welche Daten gehalten werden}}
-\newglossaryentry{profiling}{name=Profiling, description={TODO}}
-\newglossaryentry{firebug}{name=Firebug, description={Ein Debugger, speziell auf WEB-Techniken ausgerichtet. Der für Firefox als Addon zur Verfügung steht.}}
-\newglossaryentry{hack}{name=hack, description={Umgehen eines Hindernisses}}
-\newglossaryentry{firmware}{name=Firmware, description={TODO}}
-\newglossaryentry{i2c}{name={I$^2$C}, description={Der \textit{Inter-Integrated Circuit} ist ein serieller Datenbus zur Kommunikation zwischen Schaltkreisen}}
-\newglossaryentry{exception}{name=Exception, description={Prüfen ob bestimmte Gegebenheiten vorhanden sind und darauf explizit reagieren.}}
-\newglossaryentry{spi}{name=SPI, description={Bei dem \textit{Serial Peripheral Interface} handelt es sich um einen synchronen Bus. Der nach dem Master-Slave-Prinzip arbeitet und für die Kommunikation von digitalen Schaltungen benutzt wird}}
-\newglossaryentry{i2s}{name={I$^2$S}, description={Das \textit{Inter-IC Sound Interface} wird zum Übertragen von seriellen digitalen Audiodaten zwischen Schaltkreisen genutzt}}
-\newglossaryentry{usb}{name=USB, description={TODO}}
-\newglossaryentry{csv}{name=CSV, description={TODO}}
-\newglossaryentry{userspace}{name=Userspace, description={Wenn ein Prozess andere Programme startet ohne dabei spezielle Bibliotheken zu nutzen die es möglich machen, spezielle Funktionen direkt im Quelltext zu benutzen die das gleiche machen würden, nennt man diese User-Prozesse da die separiert in den RAM kopiert werden müssen und der Kernel überwacht was mit ihnen passiert.}}
-\newglossaryentry{kernelspace}{name=Kernelspace, description={Funktionen die schon im RAM stehen, speziell im für den Kernel reservierten Bereich, da sie Teile des Kernels sind, werden im Kernel-Space ausgführt. }}
-\newglossaryentry{ipk}{name=ipk, description={Dateiformat das von Paketmanagern benutzt wird die auf dem ipkg basieren.}}
-\newglossaryentry{lzma}{name=LZMA, description={\textit{Lempel-Ziv-Markow-Algorithmus}, hat eine hohe Datenkompressionsrate bei sehr hoher Entpack-Geschwindigkeit}}
-\newglossaryentry{squashfs}{name=SquashFS, description={Komprimiertes Dateisystem für Linux was nur lesbar ist.}}
-\newglossaryentry{jason}{name=Jason, description={TODO}}
-\newglossaryentry{msb}{name=MSB, description={TODO}}
-\newglossaryentry{lsb}{name=LSB, description={TODO}}
-\newglossaryentry{batch}{name=Batch, description={TODO}}
-\newglossaryentry{shell}{name=Shell, description={TODO}}
-\newglossaryentry{deadlock}{name=Deadlock, description={Wartet ein Prozess auf einen anderen Prozess, der wiederum auf den anderen wartet, z.B. zwecks lesen und schreiben einer Pipe, dann hat man eine Deadlock. Dabei werden keine weiteren wesentlichen System-Ressourcen benutzt, da sich beide in einen inaktiven Wartezustand befinden.}}
-\newglossaryentry{raceCondition}{name=Race Condition, description={Wenn mehrere Prozesse auf das selbe gleichzeitig zugreifen, könnte in einem ein anderer Wert als bei dem anderen Prozess vorliegen, da er vielleicht noch nicht fertig mit der Operation war.}}
-\newglossaryentry{spawnen}{name=spawnen, description={Ausführen eines neuen Kind-Prozesses.}}
-\newglossaryentry{posix}{name=POSIX, description={Portable Operating System Interface ist eine API für UNIX-artige Betriebssysteme und stellt erweiterte Funktionen zur Verfügung. Es dient als Interface zwischen OS und Anwendersoftware.}}
-\newglossaryentry{raShield}{name=shield, description={Erweiterungs-Modul für den Raspberry PI}}
-\newglossaryentry{BLE}{name=BLE, description={Bluetooth Low Energie, nicht für Datenstreaming geeignet TODO}}
-\newglossaryentry{ZigBee}{name=ZigBee, description={TODO}}
-\newglossaryentry{Bluetooth}{name=Bluetooth, description={TODO}}
-\newglossaryentry{AP}{name=AP, description={Ein \textit{Access Point} ist ein drahtloser Zugangspunkt für Geräte die über WiFi Hardware verfügen}}
-\newglossaryentry{SAS}{name=SAS, description={\textit{Serial Attached SCSI} ist eine serielle Schnittstelle, zum Austausch von Daten zwischen Datenträgern, wie Festplatten oder Laufwerken}}
-\newglossaryentry{SCSI}{name=SCSI, description={Das \textit{Small Computer System Interface} ist eine parallele Schnittstelle, die Hauptsächlich für die Übertragung zwischen Haupt Bus und den Peripheriegeräten entwickelt wurde}}
-\newglossaryentry{SAMBA}{name=SAMBA, description={Sammlung von Programmen mit dem Ziel Windows Datei- und Drucker- Dienste unter Unix verfügbar zu machen}}
-\newglossaryentry{3G}{name=3G, description={Dritte Generation der mobilen Übertragungstechnik. Ermöglicht DSL ähnliche Übertragungsraten im Mbit Bereich. Auch unter den  Namen HSPA bekannt}}
-\newglossaryentry{POE}{name=Power over Ethernet, description={\textit{Power over Ethernet} ist eine Technik, Geräte über Ethernet-Kabel mit Strom zu versorgen}}
-\newglossaryentry{SoC}{name=SoC, description={Bei einem \textit{System-on-a-Chip} handelt es sich um ein Verbund unterschiedlicher Schaltkreise. Die jeweils eine Funktionalität realisieren und in Kombination ein komplettes dediziertes System ergeben}}
-\newglossaryentry{DIE}{name=Die, description={Sehr kompakter für ein Ziel definierter Schaltkreis, auf einem Halbleitermaterial}}
-\newglossaryentry{GPIO}{name=GPIO, description={\textit{General-Purpose Input/Output} sind bestimmte PINs, die dazu erdacht wurden weitere Peripherie in ein bestehendes System zu integrieren}}
-\newglossaryentry{FCC}{name=FCC, description={Die \textit{Federal Communications Commission} prüft Geräte, die über eine Funktechnik verfügen, auf Einhaltung diverser Normen}}
-\newglossaryentry{RoHS}{name=RoHS, description={TODO}}
-\newglossaryentry{ISR}{name=ISR, description={Bei einer \textit{Interrupt Service Routine} handelt es sich um ein Programmstück, das ausgeführt wird, wenn eine Unterbrechungsanforderung (Interrupt) aufgetreten ist}}
-\newglossaryentry{PCB}{name=PCB, description={Ein \textit{printed circuit board}, ist ein Träger für elektronische Bauteile}}
-\newglossaryentry{OTG}{name=OTG, description={USB \textit{On-the-go} Syteme können, im Unterschied zu normalen USB Geräten, die Master und Slave Rolle wahlweise einnehmen}}
-\newglossaryentry{Framework}{name=Framework, description={Eine definierte Umgebung, die als Basis und für Veränderungen von Software bereitgestellt wird}}
-\newglossaryentry{uci}{name=uci, description={Bei dem \textit{Unified Configuration Interface} handelt es sich um eine Schnittstelle, die es in dem OpenWrt Linux Derivat ermöglicht, zentral an einem bestimmten Punkt im Dateisystem, Konfigurationsdateien für kompatible Programme zu hinterlegen}}
-\newglossaryentry{MAN}{name=MAN, description={Befehl zum lesen der Manual Pages. Eine Art von Software Dokumentation für Unix Systeme}}
-\newglossaryentry{GNU}{name=GNU, description={Der Name GNU steht für \textit{``GNU Not Unix''} und ist ein rekursives Akronym. Dabei sind wesentlich die freien Programme rund um den Kernel gemeint. Frei steht hierbei nicht für umsonst im finanziellen Sinn, sondern für Freiheit. Mit Linux wird deshalb meistens GNU/Linux gemeint}}
-\newglossaryentry{uClibc}{name=uClibc, description={Es handelt sich hierbei um eine kleinere Version der glibc. Jene für Standard Linux Systeme entwickelt wurde, um sämtliche C-Standards auf möglichst vielen Plattformen zu unterstützen. Die uClibc Bibliothek ist hingegen kompakter und macht es möglich ein Linux auch auf einem System ohne MMU zum funktionieren zu bekommen}}
-\newglossaryentry{lazy_unmounting}{name=lazy unmounting, description={Entfernt das spezifizierte Dateisystem erst, wenn auf dieses keine Zugriffe mehr erfolgen}}
-\newglossaryentry{SMB}{name=SMB, description={Das \textit{Server Message Block} Protokoll ist ein Kommunikationsprotokoll, für Dateien und andere Dienste in Netzwerken}}
-\newglossaryentry{CIFS}{name=CIFS, description={Beim \textit{Common Internet File System} handelt es sich um eine von Microsoft erweiterte Version des SMB}}
-\newglossaryentry{RAID}{name=RAID, description={Bei einem \textit{Redundant Array of Independent Disks}, handelt es sich um einen Verbund von Festplatten, die logisch zu einem Laufwerk zusammengefasst werden. Mit dem Ziel von höherer Datenverfügbarkeit zur Erhöhung der Ausfallsicherheit, oder Erreichung eines höheren Datendurchsatzes}}
-\newglossaryentry{WPS}{name=WPS, description={Das \textit{Wi-Fi Protected Setup} wird genutzt um eine erleichterte Integrierung eines WiFi Gerätes in ein bestehendes Netzwerk zu ermöglichen}}
-\newglossaryentry{E-Ink}{name=E-Ink, description={E-Ink übersetzt \textit{elektronische Tinte}, wird als Synonym für elektronisches Papier verwendet. Dabei wird, im Gegensatz zu anderen Anzeigetechniken, das Licht nicht erzeugt, sondern wie beim Papier reflektiert. Dadurch ist diese Technologie extrem Energiesparsam}}
-\newglossaryentry{uSD}{name=\textmu SD, description={11,0 x 15,0 x 0,7 kleines Flash-Speichermedium}}
-\newglossaryentry{SD}{name=SD, description={\textit{Secure Digital} ist ein digitales Speichermedium, das die Flash-Technologie verwendet}}
-\newglossaryentry{Widgets}{name=Widgets, description={Bei einem Widget handelt es sich um eine an ein Graphisches System gebundene Software, die deren Plugin-System zur Anbindung nutzt}}
-\newglossaryentry{4G}{name=4G, description={Nachfolgetechnologie zu 3G. Ermöglicht eine viel höhere Datenübertragungsrate als HSPA. Auch unter dem Namen LTE bekannt}}
-\newglossaryentry{SPARC}{name=SPARC, description={Die \textit{Scalable Processor ARChitecture} ist eine offene Mikroprozessorarchitektur von Oracle und verfügt über die Möglichkeit eine skalierende Anzahl von Registern zu verwenden und wird daher in vielen Supercomputern verwendet}}
-\newglossaryentry{SDK}{name=SDK, description={Ein \textit{Software Development Kit} ist eine Sammlung von Anwendungen, Bibliotheken und Hilfsmitteln, um eine Software zu entwickeln}}
-\newglossaryentry{ISM}{name=ISM, description={Bei dem \textit{Industrial, Scientific and Medical} Band handelt es sich um definierte Frequenzbereiche für die Nutzung von Geräten mit Funktechnologie, die je nach Frequenzbereich genehmigt werden, oder mit Störungen rechnen müssen}}
-\newglossaryentry{MIPS}{name=MIPS, description={\textit{Microprocessor without interlocked pipeline stages} ist eine spezielle Prozessorarchitektur, die der RISC Architektur ähnelt. Bei ihr wird verhindert, dass der Prozessor angehalten wird, wenn aktuell ausgeführte Befehle Informationen von Folgebefehlen benötigen. Um die dabei eventuell auftretenden Konflikte zu verhindern, muss der Kompiler spezielle Gegenmaßnahmen vollziehen}}
-\newglossaryentry{Loginshell}{name=Loginshell, description={Die erste Shell, die nach dem Anmelden an das System gestartet wird. Sie erhält eine spezielle Konfiguration, die an in ihr gestartete Subshells (interactive shell) vererbt wird}}
-\newglossaryentry{bugfix}{name=Bug Fix, description={Auch unter dem Begriff ``Patch'' bekannt. Dabei handelt es sich um einen Teil einer Software, der dazu gedacht ist, eine bestehende Software durch Korrektur eines Fehlers, schließen einer Sicherheitslücke, oder hinzufügen eines Features, aufzuwerten}}
-\newglossaryentry{Spawner}{name=Spawner, description={Ist der Eltern Prozess, der ein Kind-Prozess spawned/erzeugt/forkt}}
-\newglossaryentry{Buildroot}{name=Buildroot, description={Sammlung von Makefiles, Patches und Skripten zur vereinfachten Generierung einer kompletten embedded Linux Umgebung}}
-\newglossaryentry{bitbanging}{name=Bit-Banging, description={Software Technik für die serielle Kommunikation mit Hardware. Die Software ist dabei Verantwortlich für das Timing und die Zustände. Wird oft zur Emulation von Schnittstellen wie z.B. SPI und I$^2$C verwendet}}
-\newacronym{lvm}{LVM}{Logical Volume Manager}
+
+\newglossaryentry{SWD}{name=SWD, description={Serial Wire Debug is an alternative 2-pin electrical interface that uses the same protocol. It uses the existing GND connection. SWD uses an ARM CPU standard bi-directional wire protocol, defined in the ARM Debug Interface v5.}}
+
+\newglossaryentry{MCU}{name=MCU, description={Microcontroller Unit is a small computer on a single integrated circuit containing a processor core, memory, and programmable input/output peripherals. Program memory in the form of Ferroelectric RAM, NOR flash or OTP ROM is also often included on chip, as well as a typically small amount of RAM.}}
+
+\newglossaryentry{LVM}{name=LVM, description={Logical Volume Manage provides a method of allocating space on mass-storage devices that is more flexible than conventional partitioning schemes. In particular, a volume manager can concatenate, stripe together or otherwise combine partitions (or block devices in general) into larger virtual ones that administrators can re-size or move, potentially without interrupting system use.}}
+
+\newglossaryentry{ROM}{name=ROM, description={Read Only Memory is a class of storage medium used in computers and other electronic devices.}}
+
+\newglossaryentry{USB}{name=USB, description={Universal Serial Bus is an industry standard developed in the mid-1990s that defines the cables, connectors and communications protocols used in a bus for connection, communication, and power supply between computers and electronic devices.}} 
+
+\newglossaryentry{UART}{name=UART, description={universal asynchronous receiver/transmitter is a piece of computer hardware that translates data between parallel and serial forms. UARTs are commonly used in conjunction with communication standards such as EIA, RS-232, RS-422 or RS-485. The universal designation indicates that the data format and transmission speeds are configurable.}}
+
+\newglossaryentry{JTAG}{name=JTAG, description={Joint Test Action Group was formed in 1985 to develop a method of testing finished printed circuit boards after manufacture. In 1990, the effort was codified as a standard by the Institute of Electrical and Electronics Engineers with the designation IEEE Std. 1149.1-1990 entitled Standard Test Access Port and Boundary-Scan Architecture.}}
+
+\newglossaryentry{AMBA}{name=AMBA, description={Advanced Microcontroller Bus Architecture is an open-standard, on-chip interconnect specification for the connection and management of functional blocks in system-on-a-chip (SoC) designs. It facilitates development of multi-processor designs with large numbers of controllers and peripherals.}}
+
+\newglossaryentry{CMSIS}{name=CMSIS, description={Microcontroller Software Interface Standard, is a vendor-independent hardware abstraction layer for the Cortex-M processor series and specifies debugger interfaces.}}
+
+\newglossaryentry{AHB}{name=AHB, description={AHB, please refer to AMBA}}
+
+\newglossaryentry{NVIC}{name=NVIC, description={Nested Vectored Interrupt Controller,facilitates low-latency exception and interrupt handling, controls power management, implements System Control Registers. The NVIC supports up to 240 dynamically reprioritizable interrupts each with up to 256 levels of priority.}}
+
+\newglossaryentry{GPIO}{name=GPIO, description={General-purpose input/output is a generic pin on an integrated circuit whose behavior, including whether it is an input or output pin, can be controlled by the user at run time}}
+
+\newglossaryentry{USART}{name=USART, description={universal synchronous/asynchronous receiver/transmitter, modern ICs now come with a UART that can also communicate synchronously}}
+
+\newacronym{RCC}{RCC}{Reset and Clock Control}
+\newacronym{TAP}{TAP}{test access ports}
+\newacronym{AHB}{AHB}{Advanced High Performance Bus}
+
+
+
