@@ -1,6 +1,6 @@
 target = arm_report
 WITH_INDEX = Yes
-WITH_GLOSSARY = No
+WITH_GLOSSARY = Yes
 WITH_BIBTEX = No
 latex_SOURCES = $(target).tex *.tex
 html = html

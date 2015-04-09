@@ -57,6 +57,7 @@
 ]{scrpage2}
 \usepackage[labelfont=bf, belowskip=4pt, hypcap]{caption}
 \usepackage{a4wide}
+\usepackage[acronym]{glossaries}
 %\usepackage{mathrsfs}
 %\usepackage{mathtools}
 \usepackage{graphicx}
@@ -159,11 +160,16 @@ hypertexnames=false,% zur korrekten Erstellung der Bookmarks
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}}
 
 \makeindex
+\makeglossaries
 
 \begin{document}
 \maketitle
 \pagenumbering{Roman}
 \tableofcontents
+\input{Glossar}
+% \hypertarget{glossar}{\printnomenclature}
+\label{sec:Glossar}
+\printglossaries
 \listoffigures					% Abbildungsverzeichnis
 \listoftables					% Tabellenverzeichnis
 \lstlistoflistings
