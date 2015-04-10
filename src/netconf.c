@@ -52,6 +52,8 @@
 #include "uLoader.h"
 #include "netconf.h"
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 /* Private typedef -----------------------------------------------------------*/
 #define MAX_DHCP_TRIES        4
@@ -68,6 +70,7 @@ DHCP_State_TypeDef;
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 struct netif netif;
+struct ip_addr ipaddr;
 uint32_t TCPTimer = 0;
 uint32_t ARPTimer = 0;
 uint32_t IPaddress = 0;
@@ -79,6 +82,48 @@ DHCP_State_TypeDef DHCP_state = DHCP_START;
 #endif
 
 /* Private functions ---------------------------------------------------------*/
+extern void lwip_dhcp_start(void)
+{
+	DHCP_state = DHCP_START;
+}
+
+extern int lwip_static(const char *command, const unsigned int maxbuf)
+{
+	char *ip1, *ip2, *ip3, *ip4, *p;
+	void *cmd = (void *) command;
+
+	unsigned int cmd_size = strlen(cmd);
+	if (cmd_size <= sizeof("static") + 1)
+		IP4_ADDR(&ipaddr, IP_ADDR0, IP_ADDR1, IP_ADDR2, IP_ADDR3);
+	else {
+		/* #<{(| TODO: sanity check |)}># */
+		/* p = cmd + cmd_size + 1; */
+		/* ip1 = memchr(p, '.'); */
+		/* if (!ip1) */
+		/* 	return -1; */
+		/* ip1 = '\0'; */
+		/* ip1 = p; */
+
+		/* ip2 = memchr(p, '.'); */
+		/* if (!ip2) */
+		/* 	return -1; */
+		/* ip2 = '\0'; */
+		/* ip2 = ip2 + 1; */
+
+		/* ip3 = memchr(cmd + cmd_size + 1, '.'); */
+		/* if (!ip3) */
+		/* 	return -1; */
+		/* ip3 = '\0'; */
+		/* ip3 = cmd + cmd_size + 1; */
+		/* printf("%s.%s.%s.%s\n", ip1, ip2, ip3, ip4); */
+		/* #<{(| IP4_ADDR(&ipaddr, atoi(ip1), atoi(ip2), atoi(ip3), atoi(ip4)); |)}># */
+	}
+
+	netif_set_ipaddr(&netif, &ipaddr);
+
+	return 0;
+}
+
 void LwIP_DHCP_Process_Handle(void);
 /**
   * @brief  Initializes the lwIP stack
@@ -87,7 +132,6 @@ void LwIP_DHCP_Process_Handle(void);
   */
 void LwIP_Init(void)
 {
-  struct ip_addr ipaddr;
   struct ip_addr netmask;
   struct ip_addr gw;
 #ifndef USE_DHCP
@@ -204,7 +248,6 @@ void LwIP_Periodic_Handle(__IO uint32_t localtime)
   */
 void LwIP_DHCP_Process_Handle()
 {
-  struct ip_addr ipaddr;
   struct ip_addr netmask;
   struct ip_addr gw;
   uint8_t iptab[4];
@@ -214,8 +257,10 @@ void LwIP_DHCP_Process_Handle()
   {
     case DHCP_START:
     {
+      netif.ip_addr.addr = 0;
       dhcp_start(&netif);
       IPaddress = 0;
+      ipaddr.addr = 0;
       DHCP_state = DHCP_WAIT_ADDRESS;
 #ifdef USE_LCD
       LCD_DisplayStringLine(Line4, (uint8_t*)"     Looking for    ");
@@ -231,6 +276,7 @@ void LwIP_DHCP_Process_Handle()
       IPaddress = netif.ip_addr.addr;
 
       if (IPaddress!=0) {
+        ipaddr.addr = netif.ip_addr.addr;
         DHCP_state = DHCP_ADDRESS_ASSIGNED;
 
         /* Stop DHCP */

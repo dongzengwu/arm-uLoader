@@ -1,6 +1,7 @@
 #include "stm32f4xx.h"
 #include "tm_stm32f4_usart.h"
 #include "tftp.h"
+#include "lwip/ip_addr.h"
 /* #define __TEST__ */
 #ifdef __TEST__
 #include "stm32f4x7_eth.h"
@@ -133,7 +134,7 @@ int main(void)
 		/* sys_check_timeouts(); */
 
 		/* TM_USART_Puts(USART6, "Hallo Welt\r\n"); */
-		if (TM_USART_Gets(USART6, buffer, 64) != 0) {
+		if (TM_USART_Gets(USART6, buffer, sizeof(buffer)) != 0) {
 			parser(buffer, sizeof(buffer));
 
 			printf("\r%s> ", PROG_NAME);
@@ -166,6 +167,10 @@ static inline int parser(const char *command, const size_t maxbuf)
 		cmd_read(command, maxbuf);
 	else if (strncmp(command, "tftp", 4) == 0)
 		tftp("blinky.bin");
+	else if (strncmp(command, "dhcp", 4) == 0)
+		lwip_dhcp_start();
+	else if (strncmp(command, "static", 6) == 0)
+		lwip_static(command, maxbuf);
 	else
 		printf("unknown command: %.*s\n",
 			maxbuf, command);
@@ -243,6 +248,8 @@ static inline int printenv(const char **env)
 		"HSE_VALUE", (unsigned int) HSE_VALUE);
 	printf("%s=%u\n",
 		ENV_FILE_SIZE, (unsigned int) file_size);
+	printf("%s=" IP_ADDR_FMT "\n",
+		"IP_ADDR", get_ipaddr(&ipaddr));
 
 	while (env[i])
 		printf("%s\n", env[i++]);

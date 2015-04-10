@@ -3,12 +3,6 @@
 
 #include <string.h>
 
-#define IP_ADDR_FMT		"%hu.%hu.%hu.%hu"
-#define get_ipaddr(addr) \
-	ip4_addr1(addr), ip4_addr2(addr), ip4_addr3(addr), ip4_addr4(addr)
-#define SWAP(block)	\
-	((block) >> 8) | ((block) << 8)
-
 static inline int tftp_init(void);
 static inline int tftp_deinit(void);
 static inline int tftp_rrq(const char *file);
@@ -75,7 +69,7 @@ static inline  int tftp_rrq(const char *file)
 
 	struct ip_addr destAddr;
 
-	IP4_ADDR(&destAddr, 192, 168, 1, 22);
+	IP4_ADDR(&destAddr, 192, 168, 0, 1);
 
 	/* udp_send(tftp_upcb, p); */
 	udp_sendto(tftp_upcb, p, &destAddr, 69);
