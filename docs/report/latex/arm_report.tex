@@ -1,15 +1,15 @@
-\newcommand{\titel}{Abschlussbericht ARM}
+\newcommand{\titel}{Report for ARM Microcontroller Project}
 \title{\titel}
 \newcommand{\untertitel}{uLoader WiSe 2014}
 %\subtitle{\untertitel}
-\newcommand{\autor}{Appel, Dennis (s813783)\\Voigt, Alexander (s814526)}
+\newcommand{\autor}{Appel, Dennis (s813783)\\Voigt, Alexander (s814526)\\Merrikhi, Pedram (s827711)}
 \author{\autor}
 \date{\today}
 
 \documentclass[
 	11pt,				% Schriftgröße
 	DIV10,
-	german,				% für Umlaute, Silbentrennung etc.
+	english,         		% für Umlaute, Silbentrennung etc.
 	a4paper,			% Papierformat
 	oneside,			% einseitiges Dokument
 	titlepage,			% es wird eine Titelseite verwendet
@@ -23,6 +23,9 @@
 	numbers=endperiod
 ]{scrreprt}
 
+\usepackage{float}
+\restylefloat{table}
+
 \usepackage{scrhack}
 \usepackage{yfonts}
 % Zum Umfließen von Bildern -------------------------------------------------
@@ -33,7 +36,7 @@
 \lstset{ %
 	captionpos=b
 }
-\usepackage[ngerman]{babel}		% neue deutsche Rechtschreibung
+\usepackage[english]{babel}		% neue deutsche Rechtschreibung
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{url}			% URL-Highlighting
@@ -52,6 +55,7 @@
 ]{scrpage2}
 \usepackage[labelfont=bf, belowskip=4pt, hypcap]{caption}
 \usepackage{a4wide}
+\usepackage[acronym]{glossaries}
 %\usepackage{mathrsfs}
 %\usepackage{mathtools}
 \usepackage{graphicx}
@@ -154,18 +158,25 @@ hypertexnames=false,% zur korrekten Erstellung der Bookmarks
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1} \nameref*{#1}}}
 
 \makeindex
+\makeglossaries
 
 \begin{document}
 \maketitle
 \pagenumbering{Roman}
 \tableofcontents
+\input{Glossar}
+% \hypertarget{glossar}{\printnomenclature}
+\label{sec:Glossar}
+\printglossaries
 \listoffigures					% Abbildungsverzeichnis
 \listoftables					% Tabellenverzeichnis
 \lstlistoflistings
 \clearpage
 \pagenumbering{arabic}
 \include{introduction}
-\include{overview}
+\include{arm_aufbau}
+\include{arm_nvic}
+\include{arm_network}
 \bibliography{Bibliographie}			% Aufruf: bibtex FHWTVorlage
 \bibliographystyle{natdin}			% DIN-Stil des Literaturverzeichnisses
 % Anhang -------------------------------------------------------------------
