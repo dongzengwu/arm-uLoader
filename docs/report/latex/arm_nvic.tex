@@ -5,15 +5,15 @@ configured to fit that demand.\\
 Therefore the first thing to do is to enable the clock on APB2 to clock
 the USART6. Additionally configuration has to be done for the USARTX,
  but it is not part of the NVIC configuration.\\
-The clock is mentioned because it plays an essential part of the configuration. 
-It is not important which U(S)ART[1..6] pin is used. Naturally, the right APBX 
-has to be configured (precise diagram of stm32f4).\\
+The clock is mentioned because it plays an essential part of the configuration.
+It is not important which U(S)ART[1..6] pin is used. Naturally, the right APBX
+has to be configured (precise diagram of stm32f4).
+
 The configuration is done by writing the parameters into a structure and
 binding them and than load it into the NVIC.
 The last thing to do is to enable USART globally.
 
-\begin{lstlisting}%[ht]
-
+\begin{lstlisting}[language=C,caption={enable usart},label=lst:usart]%[ht]
 /* We are initialized */
 u->Initialized = 1;
 
