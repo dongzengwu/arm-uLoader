@@ -3,25 +3,26 @@
 \glsaddall
 
 Nowadays, an ARM-MCU could be used in every aspect of everyday life.
-Additionally, the ARM processor is the number one architecture of choice in 
-many market segments.\\\\ 
-This project is based on the development of a bootloaders and its implementation 
-inside a network. The usage stm32f4-discovery Board is a preferred and viewed as an 
-"'Allrounder"' for such a project. The reasoning behind this is the "value for money" 
+Additionally, the ARM processor is the number one architecture of choice in
+many market segments cause it aims to have the best performance to power consumption ratio..
+
+This project is based on the development of a bootloader and its implementation
+inside a network. The usage stm32f4-discovery Board is a preferred and viewed as an
+"'Allrounder"' for such a project. The reasoning behind this is the "value for money"
 and user-friendliness. This allows for an easy introduction into the world of ARM
 Microcontroller unit programming.\citep{ST-15}\\
-The ARM-Cortex-M4-Processor found on the STM32f4-discovery board possesses  
-the principal parts shown in the figure below.\\
-The aim of the project is to research the feasibility to create a quick, cheap 
-and easy to use way of utilizing an STM32 Microcontroller to communicate between 
+The ARM-Cortex-M4-Processor found on the STM32f4-discovery board possesses
+the principle parts shown in the figure below.\\
+The aim of the project is to research the feasibility to create a quick, cheap
+and easy to use way of utilizing an STM32 Microcontroller to communicate between
 a user and a remote device.\citep{ARM-14}\\\\
-The purpose of the application is meant to be a first step fundamental strategy to 
+The purpose of the application is meant to be a first step fundamental strategy to
 creating a product for future projects.\\
-It is hoped that by utilizing a boot loader, a fast and light application could 
-be used to fulfill the desire of a user to achieve a particular objective such 
-as, three way handshake signal to verify a particular device in order to transmit 
+It is hoped that by utilizing a boot loader, a fast and light application could
+be used to fulfill the desire of a user to achieve a particular objective such
+as, three way handshake signal to verify a particular device in order to transmit
 information such as codes or messages, using a TCP/IP protocol stake.\\
-As it can be demonstrated the different applications could be endless.\\ 
+As it can be demonstrated the different applications could be endless.\\
 
 \begin{figure}[ht]
 	\centering
@@ -30,14 +31,14 @@ As it can be demonstrated the different applications could be endless.\\
 	\label{m4_prinzip}
 \end{figure}
 
-Analogously, a new and different diagram would be used, in order to illustrate the 
+Analogously, a new and different diagram would be used, in order to illustrate the
 change in the usage-concept of the processors.\\
 
-But first, an overview of the discussed focal points would be outlined.\\  
+But first, an overview of the discussed focal points would be outlined.\\
 
 
 \section{Bootloader}
-The purpose of a Bootloader program is to allow the installation and utilisation 
+The purpose of a Bootloader program is to allow the installation and utilisation
 of any program that could be reloaded. Whereas the program that is currently loaded is also being run.\\
 Next it is necessary to initialise the hardware, that would in turn be needed to load the program.\\
 The "STM32f407 discovery board" offers three different methods to boot up the hardware.\citep{RB-12}\\
@@ -59,9 +60,9 @@ and BOOT2 could be set:
 \end{table}\\\\
 
 The ROM memory is included by the manufacturer along with the bootloader.\\
-It is very important to set the correct address of the program, that is located 
+It is very important to set the correct address of the program, that is located
 in the memory, in order for the reloading of the program to work.\\
-A step by step example of the sequence after the boot loader is already 
+A step by step example of the the sequence after the boot loader is already
 loaded , is as follows:
 
 \begin{enumerate}
@@ -71,12 +72,12 @@ loaded , is as follows:
 \item Point to address XY
 \end{enumerate}
 
-After these steps, the newly setup program is then responsible for the initialization 
+After these steps, the newly setup program is then responsible for the initialization
 of the hardware.\\
 
 \section{SWD}
-During the development of the Boot Loader, a serial wire debug technology was used. 
-The reason behind this is to utilize a Debug-Port that has been specially developed to 
+During the development of the Boot Loader, a serial wire debug technology was used.
+The reason behind this is to utilize a Debug-Port that has been specially developed to
 cater to a MCU that makes allows the use of the least amount of pins possible.\\
 This port consists of pins shown in the following:\\
 \begin{table}[ht]
@@ -104,12 +105,12 @@ Typically left open on target hardware.\\ \hline
 \caption{SWD PINOUT}
 \end{table}\\
 
-The other pins of the 20-pole connection are going to left out, meaning, the other 
-pins are useless for the SWD or they will be used as a GND. Regardless of the pin allocation, 
-it is important that the communication of the SWD would not be interrupted or effected. 
+The other pins of the 20-pole connection are going to left out, meaning, the other
+pins are useless for the SWD or they will be used as a GND. Regardless of the pin allocation,
+it is important that the communication of the SWD would not be interrupted or effected.
 
-This technique represents a new and more effective way to debuggen. Until now JTAG 
-represented the Debugger-Interface.  
+This technique represents a new and more effective way to debuggen. Until now JTAG
+represented the Debugger-Interface.
 
 
 The advantages of this technology are:
@@ -117,16 +118,16 @@ The advantages of this technology are:
 \begin{itemize}
 \item Only 2 Pins are used
 \item JTAG TAP controller compatible
-\item Allows the Debugger to become an extra AMBA-Bus-Master, in order to accomodate an extra 
+\item Allows the Debugger to become an extra AMBA-Bus-Master, in order to accomidate an extra
 access capability to the Register or Memory
 \item High Datarates - 4Mbytes/sec @50MHz
-\item Low Power - no extra power supply 
+\item Low Power - no extra power supply
 \item Error recognition "'built in"' that performs well
 \item Protection against errors that cause disconnection
-\end{itemize}  
+\end{itemize}
 
 \section{CMSIS}
-The ARM Cortex Microcontroller Software Interface Standard is a manufacturer independent 
+The ARM Cortex Microcontroller Software Interface Standard is a manufacturer independent
 abstraction layer for the Cortex-M processors.\\
 Thereby the CMSIS is subdivided into:
 \begin{itemize}
@@ -140,27 +141,41 @@ Thereby the CMSIS is subdivided into:
 \item CMSIS-DAP - Debug Access Port
 \end{itemize}
 
-Summarized, CMSIS allows a consistent and simple software interfaced to the processor 
+Summarized, CMSIS allows a consistent and simple software interfaced to the processor
 and peripheral devices, as well as Real-time OS (RTOS) and Middleware.
 
 \section{Nested Vectored Interrupt Controller}
-The NVIC offers the possibility to configure special interrupts 
+The NVIC offers the possibility to configure special interrupts
 (Priority, Activate, Deactivate...). \\
-Aside from the given interrupts, there are also the configurable implementation dependent interrupts.  
-Because, the first 15 interrupts are allocated, the number of implemented interrupts could be from 0-240.
+Aside from the given interrupts, there are also the configurable implementation dependent interrupts.
+Because, the first 15 interrupts are allocated, the number of implimented interrupts could be from 0-240.
 
 \section{Differences in Development}
-The whole project was developed with vim, make and gcc.
+The whole project was developed with Vim, make and gcc.
  The advantage of that is, that it is not necessary to learn how to use an IDE.
- There are a lot of IDE's which offer programming ARM. Theoretically one could 
-learn to work with a new IDE every project. Vim on the other hand is every time 
-the same, gcc and make also. The only thing one has to do is to write the 
+ There are a lot of IDE's which offer programming ARM. Theoretically one could
+learn to work with a new IDE every project. Vim on the other hand is every time
+the same, GCC and make also. The only thing one has to do is to write the
  makefile which can be very time consuming.\\
 The disadvantage is the missing luxury. Nearly every IDE offers things like an
-address editor or a nice graphical way to debug. And to be fair, it is not that
-hard to learn how to use an IDE.\citep{EM-14}
+address editor or a nice graphical way to debug.
+But as we are professional engineers, we don't need such tools that do all the work for you in the background
+so that you don't need to know what you are actually doing.
+
+What is a linker script, how does make / building work,
+you will probably never learn that if you utilize ready to use IDEs all day.
+And the most important fact, KEIL and iAR cost so much money with low benefit, why should anyone actually use them?
+Cause user are to lazy to learn what it means to be a real engineer!
+
+This project is a Bare Metal Project not a click two buttons to be ready with your work project.
+All the three programs have a steep learning curve, are Open Source,
+and have the advantage of letting you do what ever you want you just need to know what you are doing.
+
+An Engineer should get payed for their knowledge not for the tools they are using (IMHO).
 
 \section{Network}
-The stm32f407 discovery board itself has no possibility for any network connection.
-Thus the BaseBoard (BB) is needed (and used). The BB adds new drivers like ethernet
+The stm32f407 discovery board itself has no possibility for any direct network connection.
+At least no connector and transceiver but it hat the Ethernet feature already in it.
+Thus the BaseBoard (BB) is needed (and used). The BB adds new capabilities like ethernet
 or rs232.
+There are other PCB's just for the Network feature available.

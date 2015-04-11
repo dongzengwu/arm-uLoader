@@ -30,6 +30,7 @@
 *.toc
 *.lol
 *.tpt
+*.brf
 
 # Intermediate documents:
 *.dvi
