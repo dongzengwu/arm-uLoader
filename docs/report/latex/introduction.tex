@@ -10,19 +10,23 @@ This project is based on the development of a bootloader and its implementation
 inside a network. The usage stm32f4-discovery Board is a preferred and viewed as an
 "'Allrounder"' for such a project. The reasoning behind this is the "value for money"
 and user-friendliness. This allows for an easy introduction into the world of ARM
-Microcontroller unit programming.\citep{ST-15}\\
+Microcontroller unit programming.\citep{ST-15}
+
 The ARM-Cortex-M4-Processor found on the STM32f4-discovery board possesses
-the principle parts shown in the figure below.\\
+the principle parts shown in the figure below.
+
 The aim of the project is to research the feasibility to create a quick, cheap
 and easy to use way of utilizing an STM32 Microcontroller to communicate between
-a user and a remote device.\citep{ARM-14}\\\\
+a user and a remote device.\citep{ARM-14}
+
 The purpose of the application is meant to be a first step fundamental strategy to
-creating a product for future projects.\\
+creating a product for future projects.
 It is hoped that by utilizing a boot loader, a fast and light application could
 be used to fulfill the desire of a user to achieve a particular objective such
 as, three way handshake signal to verify a particular device in order to transmit
-information such as codes or messages, using a TCP/IP protocol stake.\\
-As it can be demonstrated the different applications could be endless.\\
+information such as codes or messages, using a TCP/IP protocol stake.
+
+As it can be demonstrated the different applications could be endless.
 
 \begin{figure}[ht]
 	\centering
@@ -32,18 +36,21 @@ As it can be demonstrated the different applications could be endless.\\
 \end{figure}
 
 Analogously, a new and different diagram would be used, in order to illustrate the
-change in the usage-concept of the processors.\\
+change in the usage-concept of the processors.
 
-But first, an overview of the discussed focal points would be outlined.\\
-
+But first, an overview of the discussed focal points would be outlined.
 
 \section{Bootloader}
 The purpose of a Bootloader program is to allow the installation and utilisation
-of any program that could be reloaded. Whereas the program that is currently loaded is also being run.\\
-Next it is necessary to initialise the hardware, that would in turn be needed to load the program.\\
-The "STM32f407 discovery board" offers three different methods to boot up the hardware.\citep{RB-12}\\
+of any program that could be reloaded. Whereas the program that is currently loaded is also being run.
+
+Next it is necessary to initialise the hardware, that would in turn be needed to load the program.
+
+The "STM32f407 discovery board" offers three different methods to boot up the hardware.\citep{RB-12}
+
 In order to switch between the three different boot methods, the Boot-Pins BOOT1
 and BOOT2 could be set:
+
 \begin{table}[ht]
 \centering
 \begin{tabular}{|c|c|l|l|}
@@ -57,13 +64,15 @@ and BOOT2 could be set:
 \hline
 \end{tabular}
 \caption{Boot-Pin Function}
-\end{table}\\\\
+\end{table}
 
-The ROM memory is included by the manufacturer along with the bootloader.\\
+The ROM memory is included by the manufacturer along with the bootloader.
+
 It is very important to set the correct address of the program, that is located
-in the memory, in order for the reloading of the program to work.\\
+in the memory, in order for the reloading of the program to work.
+
 A step by step example of the the sequence after the boot loader is already
-loaded , is as follows:
+loaded ,is as follows:
 
 \begin{enumerate}
 \item Hardware initialize (USB / USART / RCC ... )
@@ -78,32 +87,34 @@ of the hardware.\\
 \section{SWD}
 During the development of the Boot Loader, a serial wire debug technology was used.
 The reason behind this is to utilize a Debug-Port that has been specially developed to
-cater to a MCU that makes allows the use of the least amount of pins possible.\\
-This port consists of pins shown in the following:\\
+cater to a MCU that makes allows the use of the least amount of pins possible.
+
+This port consists of pins shown in the following:
+
 \begin{table}[ht]
-\centering
-\begin{tabular}{|c|c|c|p{10cm}|}
-\hline \hline
-	Pin & Signal & Type & Description \\ \hline
-1 & VTref & Input & This is the target reference voltage. It is used to
- check if the target has power, to create the logic-level reference for
- the input comparators and to control the output logic levels to the target.
- It is normally fed from Vdd of the target board and must not have a series resistor.\\ \hline
-7 & SWDIO & I/O & Single bi-directional data pin\\ \hline
-9 & SWCLK & Output & Clock signal to target CPU. It is recommended that
- this pin is pulled to a defined state of the target board. Typically
- connected to TCK of target CPU.\\ \hline
-13 & SWO & Output & Serial Wire Output trace port. (Optional, not required
-for SWD communication)\\ \hline
-15 & RESET & I/O & Target CPU reset signal. Typically connected to the
- RESET pin of the target CPU, which is typically called "nRST", "nRESET"
- or "RESET".\\ \hline
-19 & 5V-Supply & Output & This pin is used to supply power to some eval boards.
-Not all JLinks supply power on this pin, only the KS (Kickstart) versions.
-Typically left open on target hardware.\\ \hline
+	\centering
+	\begin{tabular}{|c|c|c|p{10cm}|}
+		\hline \hline
+		Pin & Signal & Type & Description \\ \hline
+		1 & VTref & Input & This is the target reference voltage. It is used to
+		check if the target has power, to create the logic-level reference for
+		the input comparators and to control the output logic levels to the target.
+		It is normally fed from Vdd of the target board and must not have a series resistor.\\ \hline
+		7 & SWDIO & I/O & Single bi-directional data pin\\ \hline
+		9 & SWCLK & Output & Clock signal to target CPU. It is recommended that
+		this pin is pulled to a defined state of the target board. Typically
+		connected to TCK of target CPU.\\ \hline
+		13 & SWO & Output & Serial Wire Output trace port. (Optional, not required
+		for SWD communication)\\ \hline
+		15 & RESET & I/O & Target CPU reset signal. Typically connected to the
+		RESET pin of the target CPU, which is typically called "nRST", "nRESET"
+		or "RESET".\\ \hline
+		19 & 5V-Supply & Output & This pin is used to supply power to some eval boards.
+		Not all JLinks supply power on this pin, only the KS (Kickstart) versions.
+		Typically left open on target hardware.\\ \hline
 \end{tabular}
 \caption{SWD PINOUT}
-\end{table}\\
+\end{table}
 
 The other pins of the 20-pole connection are going to left out, meaning, the other
 pins are useless for the SWD or they will be used as a GND. Regardless of the pin allocation,
@@ -111,7 +122,6 @@ it is important that the communication of the SWD would not be interrupted or ef
 
 This technique represents a new and more effective way to debuggen. Until now JTAG
 represented the Debugger-Interface.
-
 
 The advantages of this technology are:
 
@@ -128,7 +138,8 @@ access capability to the Register or Memory
 
 \section{CMSIS}
 The ARM Cortex Microcontroller Software Interface Standard is a manufacturer independent
-abstraction layer for the Cortex-M processors.\\
+abstraction layer for the Cortex-M processors.
+
 Thereby the CMSIS is subdivided into:
 \begin{itemize}
 \item CMSIS-CORE - API access to the processor kernel and peripheral register.
@@ -146,17 +157,34 @@ and peripheral devices, as well as Real-time OS (RTOS) and Middleware.
 
 \section{Nested Vectored Interrupt Controller}
 The NVIC offers the possibility to configure special interrupts
-(Priority, Activate, Deactivate...). \\
+(Priority, Activate, Deactivate...).
+
 Aside from the given interrupts, there are also the configurable implementation dependent interrupts.
 Because, the first 15 interrupts are allocated, the number of implimented interrupts could be from 0-240.
 
 \section{Differences in Development}
+As we work in teams and sometime on the same file at the same time,
+a distributed version control system was used to manage all the work to stay in sync.
+
+The System of choice was Git and therefore the public Hostplatform Github.
+
+\href{https://github.com/Voigt-Alexander/arm-uLoader}{Repository Link}
+
+There you can track down who did what, when (blame) and get updates from one central point when they happen.
+Also included is a readme where is described how to install needed tool to compile the source code.
+In addition the wiki should been read too.
+There is a collection of all used resources from the Web and Books.
+
+The presentation has been kept via prezi.com so the url for that is:
+
+\href{https://prezi.com/ighh7uigrhic/arm-cortex-m4-uloader/}{ARM CORTEX-M4 uLoader}
+
 The whole project was developed with Vim, make and gcc.
- The advantage of that is, that it is not necessary to learn how to use an IDE.
- There are a lot of IDE's which offer programming ARM. Theoretically one could
+The advantage of that is, that it is not necessary to \textit{learn} how to use an IDE.
+There are a lot of IDE's which offer programming ARM. Theoretically one could
 learn to work with a new IDE every project. Vim on the other hand is every time
 the same, GCC and make also. The only thing one has to do is to write the
- makefile which can be very time consuming.\\
+makefile which can be very time consuming.
 The disadvantage is the missing luxury. Nearly every IDE offers things like an
 address editor or a nice graphical way to debug.
 But as we are professional engineers, we don't need such tools that do all the work for you in the background
@@ -178,4 +206,4 @@ The stm32f407 discovery board itself has no possibility for any direct network c
 At least no connector and transceiver but it hat the Ethernet feature already in it.
 Thus the BaseBoard (BB) is needed (and used). The BB adds new capabilities like ethernet
 or rs232.
-There are other PCB's just for the Network feature available.
+There are other PCB's just for the Network feature available but most of them have range issues.
