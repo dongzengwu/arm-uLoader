@@ -3,10 +3,10 @@ As already mentioned, the NVIC is used to configure the interrupts. Since
 there is a bi-directional communication via USART6, the NVIC has to be
 configured to fit that demand.\\
 Therefore the first thing to do is to enable the clock on APB2 to clock
-the USART6. Additonally configuration has to be done for the USARTX,
+the USART6. Additionally configuration has to be done for the USARTX,
  but it is not part of the NVIC configuration.\\
 The clock is mentioned because it plays an essential part of the configuration. 
-It is not important which U(S)ART[1..6] pin is used. Naturally, the the right APBX 
+It is not important which U(S)ART[1..6] pin is used. Naturally, the right APBX 
 has to be configured (precise diagram of stm32f4).\\
 The configuration is done by writing the parameters into a structure and
 binding them and than load it into the NVIC.
@@ -39,7 +39,7 @@ USARTx->CR1 |= USART_CR1_UE;
 The code is part of a function therefor USARTx is a parameter, in this case it
 is USART6.
 
-The process and as well as the code that was used, generated the desired results whichs 
-proves the method that was choosen works.
+The process and as well as the code that was used, generated the desired results
+ which proves the method that was chosen works.
 
 

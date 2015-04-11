@@ -2,9 +2,9 @@
 The Network on the Baseboard is realized through a SMSC LAN8720.\\
 4-bit data nibbles are sent to the MII block. These data nibbles are clocked
 to the controller at a rate of 25MHz. The controller samples the data on the
-rising edge of RXCLK. To ensure that the setup and hold requiremenst are met,
-the nibbles are clocked out of the transcreiver on the falling edge of RXCLK.
-RXCLK is the 25MHz outpu clock for the MII bus. It is recovered from the received
+rising edge of RXCLK. To ensure that the setup and hold requirements are met,
+the nibbles are clocked out of the transceiver on the falling edge of RXCLK.
+RXCLK is the 25MHz output clock for the MII bus. It is recovered from the received
 data to clock the RXD bus. If there is no received signal, it is derived from
 system reference clock(XTAL1/CLKIN).\\
 When tracking the received data, RXCLK has a miximum jitter of 0.8ns (provided
@@ -12,7 +12,7 @@ that the jitter of the input clock, XTAL1/CLKIN, is below 100ps).\\
 In RMII mode, the 2-bit data nibbles are sent to the RMII block. These data nibbles
 are clocked to the controller at a rate of 50MHz. The controller samples the data
 on the rising edge of XTAL1/CLKIN (REF\_CLK). To ensure that the setup and hold
-requirements are met, the nibbles are clocked out of the ransceiver on the falling
+requirements are met, the nibbles are clocked out of the transceiver on the falling
 edge of XTAL1/CLKIN (REF\_CLK).\\
 
 

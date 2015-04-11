@@ -13,21 +13,21 @@ allocated.
 \begin{lstlisting}
 void (*jumptoprogram)(void) = (void (*)(void))0x08008000;
 \end{lstlisting}
-The Adress depands on the size of the Bootloader program, to make sure it won't
+The Address depends on the size of the Bootloader program, to make sure it won't
 be overwritten.\\
-Now the program has to be written to the adress of the function pointer.
+Now the program has to be written to the address of the function pointer.
 \begin{lstlisting}
 unsigned int volatile * const program = (unsigned int *) 0x08008000;
 \end{lstlisting}
 Through the variable "program" it is possible to write to and read from
-the specific adress.
+the specific address.
 \begin{lstlisting}
 *program = "'USART-Input"' /*write*/
 \end{lstlisting}
-Theoretically it is also possible to read from that adress but that is not
+Theoretically it is also possible to read from that address but that is not
 used.
 \section{Calling the Function}
-At any point of the bootloader program it now can be jumped to the adress
+At any point of the bootloader program it now can be jumped to the address
  by simply calling the function pointer.
 \begin{lstlisting}
 jumptoprogram();

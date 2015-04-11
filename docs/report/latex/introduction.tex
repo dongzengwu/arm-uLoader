@@ -6,12 +6,12 @@ Nowadays, an ARM-MCU could be used in every aspect of everyday life.
 Additionally, the ARM processor is the number one architecture of choice in 
 many market segments.\\\\ 
 This project is based on the development of a bootloaders and its implementation 
-inside a network. The usage stm32f4-discovery Board is a prefered and viewed as an 
+inside a network. The usage stm32f4-discovery Board is a preferred and viewed as an 
 "'Allrounder"' for such a project. The reasoning behind this is the "value for money" 
 and user-friendliness. This allows for an easy introduction into the world of ARM
 Microcontroller unit programming.\citep{ST-15}\\
 The ARM-Cortex-M4-Processor found on the STM32f4-discovery board possesses  
-the principel parts shown in the figure below.\\
+the principal parts shown in the figure below.\\
 The aim of the project is to research the feasibility to create a quick, cheap 
 and easy to use way of utilizing an STM32 Microcontroller to communicate between 
 a user and a remote device.\citep{ARM-14}\\\\
@@ -19,7 +19,7 @@ The purpose of the application is meant to be a first step fundamental strategy 
 creating a product for future projects.\\
 It is hoped that by utilizing a boot loader, a fast and light application could 
 be used to fulfill the desire of a user to achieve a particular objective such 
-as, threeway handshake signal to verify a particular device in order to transmit 
+as, three way handshake signal to verify a particular device in order to transmit 
 information such as codes or messages, using a TCP/IP protocol stake.\\
 As it can be demonstrated the different applications could be endless.\\ 
 
@@ -40,14 +40,14 @@ But first, an overview of the discussed focal points would be outlined.\\
 The purpose of a Bootloader program is to allow the installation and utilisation 
 of any program that could be reloaded. Whereas the program that is currently loaded is also being run.\\
 Next it is necessary to initialise the hardware, that would in turn be needed to load the program.\\
-The "STM32f407 discovery board" offers three different methodes to boot up the hardware.\citep{RB-12}\\
+The "STM32f407 discovery board" offers three different methods to boot up the hardware.\citep{RB-12}\\
 In order to switch between the three different boot methods, the Boot-Pins BOOT1
 and BOOT2 could be set:
 \begin{table}[ht]
 \centering
 \begin{tabular}{|c|c|l|l|}
 \hline \hline
-  BOOT1 & BOOT2 & Boot-Mode & Adresse\\ \hline
+  BOOT1 & BOOT2 & Boot-Mode & Addresse\\ \hline
   x & 0 & Flash Memory (User Flash) & 0x8000\_0000\\
 \hline
   0 & 1 & System Memory & 0x1FFF\_F000\\
@@ -61,7 +61,7 @@ and BOOT2 could be set:
 The ROM memory is included by the manufacturer along with the bootloader.\\
 It is very important to set the correct address of the program, that is located 
 in the memory, in order for the reloading of the program to work.\\
-A step by step example of the the sequence after the boot loader is already 
+A step by step example of the sequence after the boot loader is already 
 loaded , is as follows:
 
 \begin{enumerate}
@@ -117,7 +117,7 @@ The advantages of this technology are:
 \begin{itemize}
 \item Only 2 Pins are used
 \item JTAG TAP controller compatible
-\item Allows the Debugger to become an extra AMBA-Bus-Master, in order to accomidate an extra 
+\item Allows the Debugger to become an extra AMBA-Bus-Master, in order to accomodate an extra 
 access capability to the Register or Memory
 \item High Datarates - 4Mbytes/sec @50MHz
 \item Low Power - no extra power supply 
@@ -130,7 +130,7 @@ The ARM Cortex Microcontroller Software Interface Standard is a manufacturer ind
 abstraction layer for the Cortex-M processors.\\
 Thereby the CMSIS is subdivided into:
 \begin{itemize}
-\item CMSIS-CORE - API access to the processor kernal and peripheral register.
+\item CMSIS-CORE - API access to the processor kernel and peripheral register.
 \item CMSIS-Driver - Generic access on peripheral devices for Middleware
 			(reusability).
 \item CMSIS-DSP - DSP Liberary with over 60 functions
@@ -147,13 +147,13 @@ and peripheral devices, as well as Real-time OS (RTOS) and Middleware.
 The NVIC offers the possibility to configure special interrupts 
 (Priority, Activate, Deactivate...). \\
 Aside from the given interrupts, there are also the configurable implementation dependent interrupts.  
-Because, the first 15 interrupts are allocated, the number of implimented interrupts could be from 0-240.
+Because, the first 15 interrupts are allocated, the number of implemented interrupts could be from 0-240.
 
 \section{Differences in Development}
 The whole project was developed with vim, make and gcc.
  The advantage of that is, that it is not necessary to learn how to use an IDE.
- There are a lot of IDE's which offer programming ARM. Theorically one could 
-learn to work with a new IDE every project. Vim on the other hand is everytime 
+ There are a lot of IDE's which offer programming ARM. Theoretically one could 
+learn to work with a new IDE every project. Vim on the other hand is every time 
 the same, gcc and make also. The only thing one has to do is to write the 
  makefile which can be very time consuming.\\
 The disadvantage is the missing luxury. Nearly every IDE offers things like an
