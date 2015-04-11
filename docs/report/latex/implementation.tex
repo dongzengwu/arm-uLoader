@@ -1,0 +1,81 @@
+\chapter{Implementation}
+As mentioned earlier several makefiles are completely written from scratch.
+There is a separate makefile for the Network Stack (lwip).
+Also there is a config file (.config) that makes it possible to just compile in what is needed.
+(And not everything and let the linker find what is needed, as used in IDE's.)
+
+To save time the CMSIS libs and standard peripheral drivers supplied by ST have been used.
+In addition the well written library from Tilen Majerle \citep{TM} have been used too.
+
+To be more precisely the UART and therefor GPIO parts of them.
+The advantage of them is that is now possible to make the input nonblocking,
+so that an event is only fired when the buffer is either full or has a specific item in it.
+(this corresponds to the canonical mode of \textit{termios} programming under Linux)
+
+This behavior is important due the fact that the network stack needs occasionally time to
+process pending work.
+
+This corresponds well to the implementation idea of the lwip stack to be asynchron.
+Lwip achieves that via callbacks.
+That are registered functions that just get called when the specified event has been triggered.
+Another advantage of that is that there is not the need to use an interrupt for every possible event.
+
+Together those feature's make it possible to keep the Human Interface responsible
+while processing pending work in the background.
+
+The Human Interface makes it possible to interact with the User.
+It can be compared to a Unix shell environment.
+Corresponding to that it has some build in functions that are similar to some known from Unix.
+
+A prompt showing the name of the Program awaits input.
+This can be some calls like \textit{env} or \textit{printenv} that will show the
+actual value the global variables have at the time of the call.
+Some of them are the systemclock, IP and how many bytes the last file via TFTP was.
+
+The call \textit{tftp} will issue an tftp read request to a hardcoded
+server with a hardcoded file (blinky.bin).
+
+But this will only work when there is a network connection and the device has acquired an IP address.
+Appropriate to that the commands \textit{static} and \textit{dhcp} are available.
+At system boot there are some attempts to get an IP from a DHCP server.
+If that fails for some time an static IP will be set.
+To try the DHCP process again of switch from dynamic to static IP allocation
+these two command can be used at runtime.
+
+The Trivial File Transfer Protocol \citep{tftp} was completely implemented by us,
+via the RAW API from the lwip Stack.
+As we don't have an multi threaded system the other two API's can not be used.
+The netcon API needs an OS like Free RTOS and the Berkley socket API,
+known from UNIX Systems, is build on top of that.
+
+\section{Problems}
+As there where other classes we need to do work for, the time was way to short
+to implement all needed device drivers on our own, the help of the existing examples from
+\textit{st} \citep{st-BB-examples} was therefore needed and welcome.
+
+But the problem that has been arisen from the fact that they just use IDE's
+specially build and pre configured for those examples (project file),
+was so big and therefor time consuming,
+that we could not manage to implement the main feature of a bootloader,
+to load and start a downloaded program.
+
+There is a command implemented to read the contents of the flash (\textit{read}).
+It accepts an argument that stands for the number of bytes to read.
+The output looks like the canonical ascii format known from \textit{hexdump}.
+
+But a write command is still missing. Dues the fact that we could not find out in time
+how we need to prepare the downloaded binary to make it start from the address we we would put it.
+Guess it has to do something with the linker or startup script.
+
+The most time consuming factor was to find out how to build the code and adjust the lwip stack
+to work with the System. As the lwip wiki is kind of useless and not much documentation is available
+for the now 3 year old last version of the stack.
+To find out what to do, we were in need to reverse engineer the existing examples.
+
+\section{Test}
+The command:
+\begin{verbatim}
+	sudo picocom -b 38400 /dev/ttyUSB0 --omap crlf --echo
+\end{verbatim}
+was used, to get an interface via the uart6 of the Base Board and an ftdi adapter connected to the PC.
+To verify that DHCP and TFTP work tcpdump was used.
